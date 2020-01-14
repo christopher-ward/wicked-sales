@@ -1,0 +1,29 @@
+.header {
+  color: rgba(248, 248, 248, 0.856);
+  background-color: rgb(61, 61, 61);
+}
+
+.header h1 {
+  font-size: 1.75rem;
+}
+
+.fas {
+  font-size: 1.25rem;
+}
+
+.card {
+  height: 400px;
+}
+
+.card img {
+  object-fit: contain;
+  height: 200px;
+}
+
+.card h4 {
+  font-size: 1.25rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+}
