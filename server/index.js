@@ -33,7 +33,24 @@ app.get('/api/products', (req, res, next) => {
 });
 
 app.get('/api/products/:productId', (req, res, next) => {
-  return null;
+  const { productId } = req.params;
+  if (isNaN(productId)) {
+    next(new ClientError(`${productId} is not an integer`, 400));
+  }
+  const sql = `
+  select *
+    from "products"
+    where "productId" = $1`;
+  const reqParams = [productId];
+  db.query(sql, reqParams)
+    .then(result => {
+      if (!result.rows[0]) {
+        next(new ClientError(`No information at id ${productId} in database`, 404));
+      } else {
+        res.json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {
