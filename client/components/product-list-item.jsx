@@ -3,7 +3,9 @@ import React from 'react';
 export default function ProductListItem(props) {
   const altText = `Image of ${props.name}`;
   const newViewObjName = 'details';
-  const newViewObjParams = props.id;
+  const newViewObjParams = {
+    productId: props.id
+  };
   return (
     <div className="col-md-6 col-lg-4 col-xl-4"
       onClick={() => props.view(newViewObjName, newViewObjParams)}>

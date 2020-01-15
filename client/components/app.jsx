@@ -25,11 +25,20 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.view.name === 'catalog') {
+      return (
+        <>
+          <Header />
+          <ProductList view={this.setView} />
+        </>
+      );
+    }
     return (
       <>
         <Header />
-        <ProductList view={this.setView}/>
-        <ProductDetails />
+        <ProductDetails
+          productId={this.state.view.params}
+          view={this.setView}/>
       </>
     );
   }
