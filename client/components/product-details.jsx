@@ -36,7 +36,7 @@ export default class ProductDetails extends React.Component {
     const productLongDescription = this.state.product.longDescription;
     const resetView = () => this.props.view('catalog', {});
     return (
-      <div className="container mb-3 details">
+      <div className="container my-3 details">
         <div className="row no-gutters mt-3">
           <div className="col-sm-6 col-lg-4">
             <span className="back ml-3"
