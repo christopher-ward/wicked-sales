@@ -27,3 +27,20 @@
 .card p {
   font-size: 0.95rem;
 }
+
+.details {
+  border: rgb(0, 0, 0, 0.1) solid 1px;
+  border-radius: 5px;
+  /* height: 500px; */
+}
+
+
+
+.details .back:hover {
+  cursor: pointer;
+}
+
+.details img {
+  object-fit: contain;
+  height: 280px;
+}
