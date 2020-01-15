@@ -9,7 +9,7 @@ export default class ProductDetails extends React.Component {
   }
 
   componentDidMount() {
-    const productId = 4;
+    const productId = this.props.productId;
     fetch(`/api/products/${productId}`)
       .then(response => {
         return response.json();
