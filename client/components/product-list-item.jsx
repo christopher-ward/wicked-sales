@@ -2,8 +2,11 @@ import React from 'react';
 
 export default function ProductListItem(props) {
   const altText = `Image of ${props.name}`;
+  const newViewObjName = 'details';
+  const newViewObjParams = props.id;
   return (
-    <div className=" col-md-6 col-lg-4 col-xl-4">
+    <div className="col-md-6 col-lg-4 col-xl-4"
+      onClick={() => props.view(newViewObjName, newViewObjParams)}>
       <div className="card justify-content-between my-3">
         <img src={props.image} className="card-img-top" alt={altText} />
         <div className="card-body">
