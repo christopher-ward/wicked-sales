@@ -34,12 +34,14 @@ export default class ProductDetails extends React.Component {
     const productPrice = this.state.product.price;
     const productShortDescription = this.state.product.shortDescription;
     const productLongDescription = this.state.product.longDescription;
+    const resetView = () => this.props.view('catalog', {});
     return (
       <div className="container mb-3 details">
-        <div className="row no-gutters">
+        <div className="row no-gutters mt-3">
           <div className="col-sm-6 col-lg-4">
-            <p className="back ml-3 mt-2">{'< Back to Results'}</p>
-            <img src={productImage} className="card-img" alt={altText} />
+            <span className="back ml-3"
+              onClick={resetView}>{'< Back to Results'}</span>
+            <img src={productImage} className="card-img mt-4" alt={altText} />
           </div>
           <div className="col-sm-6 col-lg-8">
             <h4 className="card-title mt-5 pt-2">{productName}</h4>
