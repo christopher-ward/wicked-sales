@@ -16,6 +16,23 @@ export default class App extends React.Component {
     this.setView = this.setView.bind(this);
   }
 
+  componentDidMount() {
+    this.getCartItems();
+  }
+
+  getCartItems() {
+    fetch('/api/cart/')
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        // console.log('Cart:', response);
+      })
+      .catch(err => {
+        console.error('Caught in App.getCartItems:', err);
+      });
+  }
+
   setView(name, params) {
     this.setState({
       view: {
