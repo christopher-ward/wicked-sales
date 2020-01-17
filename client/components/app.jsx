@@ -25,9 +25,6 @@ export default class App extends React.Component {
       .then(response => {
         return response.json();
       })
-      .then(response => {
-        // console.log('Cart:', response);
-      })
       .catch(err => {
         console.error('Caught in App.getCartItems:', err);
       });
@@ -46,7 +43,7 @@ export default class App extends React.Component {
     if (this.state.view.name === 'catalog') {
       return (
         <>
-          <Header />
+          <Header cartItemCount={this.state.view.cart.length}/>
           <ProductList view={this.setView} />
         </>
       );
