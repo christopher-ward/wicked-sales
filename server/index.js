@@ -55,7 +55,7 @@ app.get('/api/products/:productId', (req, res, next) => {
 
 app.get('/api/cart', (req, res, next) => {
   if (!req.session.cartId) {
-    res.status(200).json([]);
+    return res.status(200).json([]);
   }
   const sql = `select "c"."cartItemId",
          "c"."price",
@@ -77,9 +77,9 @@ app.get('/api/cart', (req, res, next) => {
 app.post('/api/cart/', (req, res, next) => {
   const productId = req.body.productId;
   if (isNaN(req.body.productId)) {
-    next(new ClientError(`ID ${req.body.productId} is not an integer`, 400));
+    return next(new ClientError(`ID ${req.body.productId} is not an integer`, 400));
   } else if (!req.body.productId) {
-    next(new ClientError('Require a product ID', 400));
+    return next(new ClientError('Require a product ID', 400));
   }
   const sql = `
   select "price"
@@ -89,7 +89,7 @@ app.post('/api/cart/', (req, res, next) => {
   db.query(sql, param)
     .then(price => {
       if (price.rows.length === 0) {
-        next(new ClientError(`There is no price at ID ${productId}`, 400));
+        throw (new ClientError(`There is no price at ID ${productId}`, 400));
       }
       if (req.session.cartId) {
         return {
