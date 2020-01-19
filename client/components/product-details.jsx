@@ -47,7 +47,7 @@ export default class ProductDetails extends React.Component {
             <h4 className="card-title mt-5 pt-2">{productName}</h4>
             <h5>{`$${parseFloat(productPrice / 100).toFixed(2)}`}</h5>
             <p>{productShortDescription}</p>
-            <button className="btn btn-primary">Add to Cart</button>
+            <button onClick={() => this.props.addToCart({ productId: this.props.productId })} className="btn btn-primary">Add to Cart</button>
           </div>
         </div>
         <div className="col-12 no-gutters p-2 mt-4">

@@ -8,14 +8,13 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'details', // hardcoded to details to work on that section, default is 'catalog'
-        params: {
-          productId: 3 // hardcoded to work on add to cart button, default is params: {},
-        },
+        name: 'catalog', // hardcoded to details to work on that section, default is 'catalog'
+        params: {}, // hardcoded to work on add to cart button, default is params: {},
         cart: []
       }
     };
     this.setView = this.setView.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +49,10 @@ export default class App extends React.Component {
         const newCart = this.state.view.cart.concat(response);
         this.setState({
           view: {
+            name: this.state.view.name,
+            params: {
+              productId: product.productId
+            },
             cart: newCart
           }
         });
@@ -63,26 +66,29 @@ export default class App extends React.Component {
     this.setState({
       view: {
         name: name,
-        params: params
+        params: params,
+        cart: this.state.view.cart
       }
     });
   }
 
   render() {
+    const cartLength = this.state.view.cart.length;
     if (this.state.view.name === 'catalog') {
       return (
         <>
-          <Header cartItemCount={this.state.view.cart.length}/>
+          <Header cartItemCount={cartLength}/>
           <ProductList view={this.setView} />
         </>
       );
     }
     return (
       <>
-        <Header cartItemCount={this.state.view.cart.length}/>
+        <Header cartItemCount={cartLength}/>
         <ProductDetails
           productId={this.state.view.params.productId}
-          view={this.setView}/>
+          view={this.setView}
+          addToCart={this.addToCart}/>
       </>
     );
   }
