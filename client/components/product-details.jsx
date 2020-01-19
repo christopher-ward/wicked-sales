@@ -43,7 +43,7 @@ export default class ProductDetails extends React.Component {
               onClick={resetView}>{'< Back to Results'}</span>
             <img src={productImage} className="card-img mt-4" alt={altText} />
           </div>
-          <div className="col-sm-6 col-lg-8">
+          <div className="col-sm-6 col-lg-8 pl-2">
             <h4 className="card-title mt-5 pt-2">{productName}</h4>
             <h5>{`$${parseFloat(productPrice / 100).toFixed(2)}`}</h5>
             <p>{productShortDescription}</p>
