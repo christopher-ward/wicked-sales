@@ -9,9 +9,9 @@ export default class App extends React.Component {
     this.state = {
       view: {
         name: 'catalog', // hardcoded to details to work on that section, default is 'catalog'
-        params: {}, // hardcoded to work on add to cart button, default is params: {},
-        cart: []
-      }
+        params: {} // hardcoded to work on add to cart button, default is params: {},
+      },
+      cart: []
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -46,15 +46,15 @@ export default class App extends React.Component {
         return response.json();
       })
       .then(response => {
-        const newCart = this.state.view.cart.concat(response);
+        const newCart = this.state.cart.concat(response);
         this.setState({
           view: {
             name: this.state.view.name,
             params: {
               productId: product.productId
-            },
-            cart: newCart
-          }
+            }
+          },
+          cart: newCart
         });
       })
       .catch(err => {
@@ -66,14 +66,14 @@ export default class App extends React.Component {
     this.setState({
       view: {
         name: name,
-        params: params,
-        cart: this.state.view.cart
-      }
+        params: params
+      },
+      cart: this.state.cart
     });
   }
 
   render() {
-    const cartLength = this.state.view.cart.length;
+    const cartLength = this.state.cart.length;
     if (this.state.view.name === 'catalog') {
       return (
         <>
