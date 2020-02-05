@@ -14,8 +14,14 @@ A full stack online retail shopping cart app using React.js, Node.js, and Postgr
 
 ## Live Demo
 Check out the live version here: <https://wickedsales.wardofcode.com/>
+
+## Features
+
 ## App Preview
 ![Wicked-Sales_Add_To_Cart_and_Responsiveness](1_Add_To_Cart_and_Responsiveness.gif)
+
+### Upcoming Features
+
 ## Development
 
 #### System Requirements
