@@ -20,7 +20,7 @@ Check out the live version here: <https://wickedsales.wardofcode.com/>
 ## App Preview
 ![Wicked-Sales_Add_To_Cart_and_Responsiveness](1_Add_To_Cart_and_Responsiveness.gif)
 
-### Upcoming Features
+## Upcoming Features
 
 ## Development
 
