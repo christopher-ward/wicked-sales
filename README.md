@@ -21,8 +21,7 @@ Check out the live version here: <https://wickedsales.wardofcode.com/>
 - User can add product to a cart
 
 ## App Preview
-![Playing_A_Link_to_the_Match](playing_memory_match.gif)
-![Reshuffling_A_Link_to_the_Match](resetting_and_reshuffling.gif)
+![Wicked-Sales_Add_To_Cart_and_Responsiveness](1_Add_To_Cart_and_Responsiveness.gif)
 
 ## Upcoming Features
 - User can view products in their cart
