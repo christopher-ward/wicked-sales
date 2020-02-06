@@ -52,8 +52,5 @@ If you'd like to play around with the project on your local machine, start in yo
     ```
     Allow a few moments for the project to build...
     
-1. Open in localhost in browser.
-    ```
-    http://localhost:3000/
-    ```
+1. Open the application in [https://localhost:3000](https://localhost:3000) in your browser.
     
