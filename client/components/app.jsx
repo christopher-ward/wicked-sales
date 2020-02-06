@@ -8,8 +8,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'catalog', // hardcoded to details to work on that section, default is 'catalog'
-        params: {} // hardcoded to work on add to cart button, default is params: {},
+        name: 'catalog',
+        params: {}
       },
       cart: []
     };
