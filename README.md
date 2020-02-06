@@ -16,11 +16,16 @@ A full stack online retail shopping cart app using React.js, Node.js, and Postgr
 Check out the live version here: <https://wickedsales.wardofcode.com/>
 
 ## Features
+- User can browse catalog of products
+- User can select product to view elaborated details of product
+- User can add product to a cart
 
 ## App Preview
 ![Wicked-Sales_Add_To_Cart_and_Responsiveness](1_Add_To_Cart_and_Responsiveness.gif)
 
 ## Upcoming Features
+- User can view products in their cart
+- User can checkout products from the cart and provide address and payment information
 
 ## Development
 
