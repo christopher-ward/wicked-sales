@@ -37,7 +37,7 @@ Check out the live version here: <https://wickedsales.wardofcode.com/>
 #### Getting Started
 If you'd like to play around with the project on your local machine, start in your command line interface (BASH, Cmder, Terminal, etc):
 
-1. Clone the repository in your CLI.
+1. Clone this repository in your CLI.
     ```shell
     git clone https://github.com/christopher-ward/wicked-sales.git
     cd wicked-sales
