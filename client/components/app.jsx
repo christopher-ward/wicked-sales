@@ -2,13 +2,14 @@ import React from 'react';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
+import CartSummary from './cart-summary';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: {
-        name: 'catalog',
+        name: 'cart', // testing and changing from 'catalog' to 'cart'
         params: {}
       },
       cart: []
@@ -73,12 +74,35 @@ export default class App extends React.Component {
   }
 
   render() {
+    const cartItems = [ // testing
+      {
+        image: '/images/shake-weight.jpg',
+        name: 'Shake Weight',
+        price: 2999,
+        shortDescription: 'Dynamic Inertia technology ignites muscles in arms, shoulders, and chest.',
+        productId: 1
+      },
+      {
+        image: '/images/shamwow.jpg',
+        name: 'ShamWow',
+        price: 2595,
+        shortDescription: 'It\'s like a chamois, towel, and sponge, all in one! Soaks up to 10x it\'s weight in any liquid!',
+        productId: 2
+      }
+    ];
     const cartLength = this.state.cart.length;
     if (this.state.view.name === 'catalog') {
       return (
         <>
           <Header cartItemCount={cartLength}/>
           <ProductList view={this.setView} />
+        </>
+      );
+    } else if (this.state.view.name === 'cart') {
+      return (
+        <>
+          <Header cartItemCount={cartLength} />
+          <CartSummary cartItems={cartItems}/>  {/** Testing */}
         </>
       );
     }
