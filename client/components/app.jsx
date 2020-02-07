@@ -90,7 +90,9 @@ export default class App extends React.Component {
           <Header
             cartItemCount={cartLength}
             view={this.setView} />
-          <CartSummary cartItems={this.state.cart}/>
+          <CartSummary
+            cartItems={this.state.cart}
+            view={this.setView}/>
         </>
       );
     }
