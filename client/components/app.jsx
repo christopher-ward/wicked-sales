@@ -9,7 +9,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'cart', // testing and changing from 'catalog' to 'cart'
+        name: 'cart', // testing. changed 'catalog' to 'cart'
         params: {}
       },
       cart: []
@@ -20,6 +20,31 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.getCartItems();
+    this.test();
+  }
+
+  test() {
+    this.setState({ // testing
+      // view: {
+      //   name: 'cart'
+      // },
+      cart: [
+        {
+          image: '/images/shake-weight.jpg',
+          name: 'Shake Weight',
+          price: 2999,
+          shortDescription: 'Dynamic Inertia technology ignites muscles in arms, shoulders, and chest.',
+          productId: 1
+        },
+        {
+          image: '/images/shamwow.jpg',
+          name: 'ShamWow',
+          price: 2595,
+          shortDescription: 'It\'s like a chamois, towel, and sponge, all in one! Soaks up to 10x it\'s weight in any liquid!',
+          productId: 2
+        }
+      ]
+    });
   }
 
   getCartItems() {
@@ -74,22 +99,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    const cartItems = [ // testing
-      {
-        image: '/images/shake-weight.jpg',
-        name: 'Shake Weight',
-        price: 2999,
-        shortDescription: 'Dynamic Inertia technology ignites muscles in arms, shoulders, and chest.',
-        productId: 1
-      },
-      {
-        image: '/images/shamwow.jpg',
-        name: 'ShamWow',
-        price: 2595,
-        shortDescription: 'It\'s like a chamois, towel, and sponge, all in one! Soaks up to 10x it\'s weight in any liquid!',
-        productId: 2
-      }
-    ];
     const cartLength = this.state.cart.length;
     if (this.state.view.name === 'catalog') {
       return (
@@ -102,7 +111,7 @@ export default class App extends React.Component {
       return (
         <>
           <Header cartItemCount={cartLength} />
-          <CartSummary cartItems={cartItems}/>  {/** Testing */}
+          <CartSummary cartItems={this.state.cart}/>
         </>
       );
     }
