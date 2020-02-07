@@ -57,7 +57,8 @@ app.get('/api/cart', (req, res, next) => {
   if (!req.session.cartId) {
     return res.status(200).json([]);
   }
-  const sql = `select "c"."cartItemId",
+  const sql = `
+  select "c"."cartItemId",
          "c"."price",
          "p"."productId",
          "p"."image",
