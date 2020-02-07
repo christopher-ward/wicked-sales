@@ -9,7 +9,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'cart', // testing. changed 'catalog' to 'cart'
+        name: 'catalog',
         params: {}
       },
       cart: []
@@ -20,31 +20,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.getCartItems();
-    this.test();
-  }
-
-  test() {
-    this.setState({ // testing
-      // view: {
-      //   name: 'cart'
-      // },
-      cart: [
-        {
-          image: '/images/shake-weight.jpg',
-          name: 'Shake Weight',
-          price: 2999,
-          shortDescription: 'Dynamic Inertia technology ignites muscles in arms, shoulders, and chest.',
-          productId: 1
-        },
-        {
-          image: '/images/shamwow.jpg',
-          name: 'ShamWow',
-          price: 2595,
-          shortDescription: 'It\'s like a chamois, towel, and sponge, all in one! Soaks up to 10x it\'s weight in any liquid!',
-          productId: 2
-        }
-      ]
-    });
   }
 
   getCartItems() {
@@ -103,21 +78,27 @@ export default class App extends React.Component {
     if (this.state.view.name === 'catalog') {
       return (
         <>
-          <Header cartItemCount={cartLength}/>
+          <Header
+            cartItemCount={cartLength}
+            view={this.setView}/>
           <ProductList view={this.setView} />
         </>
       );
     } else if (this.state.view.name === 'cart') {
       return (
         <>
-          <Header cartItemCount={cartLength} />
+          <Header
+            cartItemCount={cartLength}
+            view={this.setView} />
           <CartSummary cartItems={this.state.cart}/>
         </>
       );
     }
     return (
       <>
-        <Header cartItemCount={cartLength}/>
+        <Header
+          cartItemCount={cartLength}
+          view={this.setView} />
         <ProductDetails
           productId={this.state.view.params.productId}
           view={this.setView}

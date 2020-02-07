@@ -5,10 +5,11 @@ export default function CartSummaryItem(props) {
   const itemName = props.name;
   const itemPrice = props.price;
   const itemShortDesc = props.shortDescription;
+  const altText = `Image of ${itemName}`;
   return (
     <div className="row">
       <div className="col">
-        <img src={itemImage} />
+        <img src={itemImage} alt={altText}/>
       </div>
       <div className="col">
         <h4 className="card-title">{itemName}</h4>
