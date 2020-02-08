@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
+import CartSummary from './cart-summary';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,20 +16,6 @@ export default class App extends React.Component {
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
-  }
-
-  componentDidMount() {
-    this.getCartItems();
-  }
-
-  getCartItems() {
-    fetch('/api/cart/')
-      .then(response => {
-        return response.json();
-      })
-      .catch(err => {
-        console.error('Caught in App.getCartItems:', err);
-      });
   }
 
   addToCart(product) {
@@ -77,14 +64,29 @@ export default class App extends React.Component {
     if (this.state.view.name === 'catalog') {
       return (
         <>
-          <Header cartItemCount={cartLength}/>
+          <Header
+            cartItemCount={cartLength}
+            view={this.setView}/>
           <ProductList view={this.setView} />
+        </>
+      );
+    } else if (this.state.view.name === 'cart') {
+      return (
+        <>
+          <Header
+            cartItemCount={cartLength}
+            view={this.setView} />
+          <CartSummary
+            cartItems={this.state.cart}
+            view={this.setView}/>
         </>
       );
     }
     return (
       <>
-        <Header cartItemCount={cartLength}/>
+        <Header
+          cartItemCount={cartLength}
+          view={this.setView} />
         <ProductDetails
           productId={this.state.view.params.productId}
           view={this.setView}
