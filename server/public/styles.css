@@ -21,15 +21,48 @@
 .card p {
   font-size: 0.95rem;
 }
+.back {
+  font-size: 1.15rem;
+  margin: 1rem 1rem 1rem 0;
+}
 .details {
   border: rgb(0, 0, 0, 0.1) solid 1px;
   border-radius: 5px;
 }
 .details .back:hover,
+.summary .back:hover,
 .card:hover {
   cursor: pointer;
 }
 .details img {
   object-fit: contain;
   height: 280px;
+}
+.summary img {
+  object-fit: contain;
+}
+
+@media only screen and (max-width: 575px) {
+  .item-info {
+    padding: 0.5rem;
+    text-align: center;
+  }
+  .details {
+    margin: 1rem 0!important;
+  }
+}
+
+@media only screen and (max-width: 493px) {
+  .logo .fas, .logo h1 {
+    font-size: 1.10rem;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .logo h1 {
+    margin-left: 0!important;
+  }
+  .products {
+    margin: 0 1rem!important;
+  }
 }
