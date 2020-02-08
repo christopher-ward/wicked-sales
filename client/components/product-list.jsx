@@ -45,7 +45,7 @@ export default class ProductList extends React.Component {
     const productList = this.populateListItems();
     return (
       <div className="container">
-        <div className="row mx-5">
+        <div className="row products mx-5">
           {productList}
         </div>
       </div>
