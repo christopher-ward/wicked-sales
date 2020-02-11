@@ -75,7 +75,7 @@ app.get('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/cart/', (req, res, next) => {
+app.post('/api/cart', (req, res, next) => {
   const productId = req.body.productId;
   if (isNaN(req.body.productId)) {
     return next(new ClientError(`ID ${req.body.productId} is not an integer`, 400));
@@ -99,8 +99,9 @@ app.post('/api/cart/', (req, res, next) => {
         };
       }
       const sql = `
-      insert into "carts" ("cartId", "createdAt")
-      values (default, default)
+      insert into "carts"
+                  ("cartId", "createdAt")
+           values (default, default)
       returning "cartId"`;
       return db.query(sql)
         .then(carts => {
@@ -113,8 +114,9 @@ app.post('/api/cart/', (req, res, next) => {
     .then(result => {
       req.session.cartId = result.cartId;
       const sql = `
-      insert into "cartItems" ("cartId", "productId", "price")
-      values ($1, $2, $3)
+      insert into "cartItems"
+                  ("cartId", "productId", "price")
+           values ($1, $2, $3)
       returning "cartItemId"`;
       const params = [req.session.cartId, parseInt(productId), result.price];
       return db.query(sql, params)
@@ -138,6 +140,34 @@ app.post('/api/cart/', (req, res, next) => {
         .then(result => {
           res.status(201).json(result.rows[0]);
         });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.post('/api/orders', (req, res, next) => {
+  const { name } = req.body;
+  const { cartId } = req.session;
+  const { creditCard } = req.body;
+  const { shippingAddress } = req.body;
+  if (!cartId) {
+    return next(new ClientError('No cart ID for this session. Must initially add items to cart.', 400));
+  } else if (!name || !creditCard || !shippingAddress) {
+    return next(new ClientError('Missing name/creditCard/shippingAddress value(s).', 400));
+  }
+  const sql = `
+  insert into "orders"
+              ("cartId", "name", "creditCard", "shippingAddress")
+       values ($1, $2, $3, $4)
+  returning *`;
+  const paramArray = [cartId, name, creditCard, shippingAddress];
+  db.query(sql, paramArray)
+    .then(result => {
+      const resultObj = result.rows[0];
+      delete req.session.cartId;
+      delete resultObj.cartId;
+      res.status(201).json(resultObj);
     })
     .catch(err => {
       next(err);
