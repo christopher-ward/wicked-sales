@@ -59,6 +59,35 @@ export default class App extends React.Component {
     });
   }
 
+  placeOrder(orderObj) {
+    // orderObj will contain name, creditCard, and shippingAddress
+    const fetchURL = '/api/orders';
+    const initObj = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderObj)
+    };
+    const fetchRequest = new Request(fetchURL, initObj);
+    fetch(fetchRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          view: {
+            name: 'catalog',
+            params: {}
+          },
+          cart: []
+        });
+      })
+      .catch(err => {
+        console.error('Caught in App.placeOrder:', err);
+      });
+  }
+
   render() {
     const cartLength = this.state.cart.length;
     if (this.state.view.name === 'catalog') {
