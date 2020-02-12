@@ -45,7 +45,7 @@ export default function CartSummary(props) {
       </div>
       <div className="container-fluid p-2 checkout align-items-center">
         <div className="row justify-content-center align-items-center">
-          <h4 className="col-6 col-sm-6 col-lg-8 m-0 p-0">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h4>
+          <h4 className="col-6 col-lg-8 m-0 p-0">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h4>
           <button type="button" className=" btn btn-success pl-3" onClick={() => props.view('checkout', {})}>
             Checkout<i className="fas fa-cash-register mx-2"></i>
           </button>
