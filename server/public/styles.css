@@ -5,6 +5,9 @@
 .header h1 {
   font-size: 1.75rem;
 }
+.header button {
+  font-weight: bold;
+}
 .fas {
   font-size: 1.25rem;
 }
@@ -38,8 +41,23 @@
   object-fit: contain;
   height: 280px;
 }
+.summary {
+  margin-bottom: 55px;
+}
 .summary img {
   object-fit: contain;
+}
+.checkout {
+  position: fixed;
+  height: 55px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+.checkout .btn {
+  min-width: 140px;
+  max-height: 40px;
 }
 
 @media only screen and (max-width: 575px) {
@@ -49,6 +67,9 @@
   }
   .details {
     margin: 1rem 0!important;
+  }
+  .checkout h4 {
+    font-size: 1.35rem;
   }
 }
 
