@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'checkout', // testing for checkout. default is 'catalog'
+        name: 'catalog',
         params: {}
       },
       cart: []
@@ -62,7 +62,6 @@ export default class App extends React.Component {
   }
 
   placeOrder(orderObj) {
-    // orderObj will contain name, creditCard, and shippingAddress
     const fetchURL = '/api/orders';
     const initObj = {
       method: 'POST',
@@ -118,8 +117,8 @@ export default class App extends React.Component {
           <Header
             cartItemCount={cartLength}
             view={this.setView} />
-          {/* <CheckoutForm placeOrder={this.placeOrder}/> */}
-          <CheckoutForm />
+          <CheckoutForm
+            placeOrder={this.placeOrder}/>
         </>
       );
     }
