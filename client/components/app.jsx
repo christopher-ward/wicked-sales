@@ -3,6 +3,7 @@ import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
+import CheckoutForm from './checkout-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class App extends React.Component {
     };
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.placeOrder = this.placeOrder.bind(this);
   }
 
   addToCart(product) {
@@ -59,6 +61,34 @@ export default class App extends React.Component {
     });
   }
 
+  placeOrder(orderObj) {
+    const fetchURL = '/api/orders';
+    const initObj = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderObj)
+    };
+    const fetchRequest = new Request(fetchURL, initObj);
+    fetch(fetchRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          view: {
+            name: 'catalog',
+            params: {}
+          },
+          cart: []
+        });
+      })
+      .catch(err => {
+        console.error('Caught in App.placeOrder:', err);
+      });
+  }
+
   render() {
     const cartLength = this.state.cart.length;
     if (this.state.view.name === 'catalog') {
@@ -79,6 +109,16 @@ export default class App extends React.Component {
           <CartSummary
             cartItems={this.state.cart}
             view={this.setView}/>
+        </>
+      );
+    } else if (this.state.view.name === 'checkout') {
+      return (
+        <>
+          <Header
+            cartItemCount={cartLength}
+            view={this.setView} />
+          <CheckoutForm
+            placeOrder={this.placeOrder}/>
         </>
       );
     }

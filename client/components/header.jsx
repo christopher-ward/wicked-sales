@@ -9,9 +9,9 @@ export default function Header(props) {
         <h1 className="ml-1 mb-1">Wicked Sales</h1>
       </div>
       <div className="col d-flex align-items-center justify-content-end mr-4 my-3">
-        <button type="button" className="btn btn-success " onClick={() => props.view('cart', {})}>
+        <button type="button" className="btn btn-light" onClick={() => props.view('cart', {})}>
           View<i className="fas fa-shopping-cart ml-1 mr-2"></i>
-          <span className="badge badge-pill badge-primary">{itemCount}</span>
+          <span className="badge badge-pill badge-secondary">{itemCount}</span>
         </button>
       </div>
     </div>
