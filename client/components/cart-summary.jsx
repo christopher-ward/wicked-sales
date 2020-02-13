@@ -23,7 +23,7 @@ export default function CartSummary(props) {
         <div className="row">
           <div className="col">
             <p className="back"
-              onClick={resetView}>{'< Back to Results'}</p>
+              onClick={resetView}>{'< Back to Catalog'}</p>
             <h1 className="mt-3">My Cart</h1>
             <h2 className="mt-3 text-center">No Items In Cart</h2>
           </div>
@@ -37,7 +37,7 @@ export default function CartSummary(props) {
         <div className="row">
           <div className="col">
             <p className="back"
-              onClick={resetView}>{'< Back to Results'}</p>
+              onClick={resetView}>{'< Back to Catalog'}</p>
             <h1 className="mt-3 ">My Cart</h1>
           </div>
         </div>

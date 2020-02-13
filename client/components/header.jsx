@@ -6,7 +6,7 @@ export default function Header(props) {
     <div className="navbar align-items-center header p-0">
       <div className="col logo d-flex align-items-center my-2">
         <i className="fas fa-dollar-sign pl-4"></i>
-        <h1 className="ml-1 mb-1">Wicked Sales</h1>
+        <h1 className="ml-1 mb-1" onClick={() => props.view('catalog', {})}>Wicked Sales</h1>
       </div>
       <div className="col d-flex align-items-center justify-content-end mr-4 my-3">
         <button type="button" className="btn btn-secondary" onClick={() => props.view('cart', {})}>
