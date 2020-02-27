@@ -20,6 +20,25 @@ export default class App extends React.Component {
     this.placeOrder = this.placeOrder.bind(this);
   }
 
+  componentDidMount() {
+    this.getCartItems();
+  }
+
+  getCartItems() {
+    fetch('/api/cart/')
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          cart: response
+        });
+      })
+      .catch(err => {
+        console.error('Caught in App.getCartItems:', err);
+      });
+  }
+
   addToCart(product) {
     const fetchURL = '/api/cart';
     const initObj = {
