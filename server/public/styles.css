@@ -59,6 +59,9 @@
   min-width: 140px;
   max-height: 40px;
 }
+.checkout-form input, .checkout-form textarea {
+  border: #c9c9c9 solid 2px;
+}
 .checkout-form small {
   color: red;
   margin-left: 10px;
@@ -67,7 +70,6 @@
 .checkout-form .fa-times {
   color: red;
 }
-
 .checkout-form .fa-check {
   color: rgb(18, 221, 18);
 }
