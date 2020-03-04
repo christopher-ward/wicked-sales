@@ -59,6 +59,18 @@
   min-width: 140px;
   max-height: 40px;
 }
+.checkout-form small {
+  color: red;
+  margin-left: 10px;
+  font-size: 0.85rem;
+}
+.checkout-form .fa-times {
+  color: red;
+}
+
+.checkout-form .fa-check {
+  color: rgb(18, 221, 18);
+}
 
 @media only screen and (max-width: 575px) {
   .item-info {
