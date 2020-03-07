@@ -13,9 +13,11 @@ export default class App extends React.Component {
         name: 'catalog',
         params: {}
       },
+      modalView: true,
       cart: []
     };
     this.setView = this.setView.bind(this);
+    this.setModalView = this.setModalView.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
   }
@@ -80,6 +82,12 @@ export default class App extends React.Component {
     });
   }
 
+  setModalView() {
+    this.setState({
+      modalView: false
+    });
+  }
+
   placeOrder(orderObj) {
     const fetchURL = '/api/orders';
     const initObj = {
@@ -116,7 +124,10 @@ export default class App extends React.Component {
           <Header
             cartItemCount={cartLength}
             view={this.setView}/>
-          <ProductList view={this.setView} />
+          <ProductList
+            view={this.setView}
+            setModalView={this.setModalView}
+            modalView={this.state.modalView} />
         </>
       );
     } else if (this.state.view.name === 'cart') {
