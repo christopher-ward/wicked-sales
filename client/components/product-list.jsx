@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductListItem from './product-list-item';
+import DisclaimerModal from './disclaimer-modal';
 
 export default class ProductList extends React.Component {
   constructor(props) {
@@ -47,6 +48,9 @@ export default class ProductList extends React.Component {
       <div className="container">
         <div className="row products mx-5">
           {productList}
+          <DisclaimerModal
+            setModalView={this.props.setModalView}
+            modalView={this.props.modalView} />
         </div>
       </div>
     );
