@@ -16,10 +16,11 @@ export default class CheckoutForm extends React.Component {
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.filterCharacters = this.filterCharacters.bind(this);
   }
 
   handleFormChange(event) {
-    const value = event.target.type === 'number' && event.target.length > 0 ? parseInt(event.target.value) : event.target.value;
+    const value = event.target.type === 'number' ? parseInt(event.target.value) : event.target.value;
     const name = event.target.name;
     this.setState({
       [name]: value
@@ -80,6 +81,10 @@ export default class CheckoutForm extends React.Component {
     return true;
   }
 
+  filterCharacters(event) {
+    ['e', 'E', '+', '-', '.'].includes(event.key) && event.preventDefault();
+  }
+
   render() {
     const nameResultVisual = this.state.nameVisualFeedback;
     const creditCardResultVisual = this.state.creditCardVisualFeedback;
@@ -98,7 +103,13 @@ export default class CheckoutForm extends React.Component {
             </div>
             <div className="d-flex flex-column form-group">
               <label htmlFor="creditCard">Credit Card</label>
-              <input type="number" name="creditCard" id="creditCard" value={this.state.creditCard} onChange={this.handleFormChange}></input>
+              <input
+                type="number"
+                name="creditCard"
+                id="creditCard"
+                value={this.state.creditCard}
+                onChange={this.handleFormChange}
+                onKeyDown={this.filterCharacters}></input>
               <div className="d-flex">
                 <i className={`fas ${creditCardResultVisual}`}></i>
                 <small>{this.state.creditCardCheck}</small>
