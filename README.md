@@ -7,6 +7,7 @@ A full stack online retail shopping cart app using React.js, Node.js, and Postgr
 - Webpack 4
 - Bootstrap 4
 - Node.js
+- Express
 - PostrgreSQL
 - HTML5
 - CSS3
