@@ -28,11 +28,13 @@
   font-size: 1.15rem;
   margin: 1rem 1rem 1rem 0;
 }
-.disclaimer {
+.disclaimer, .disclaimer .disclaimer-message {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.disclaimer {
   position: fixed;
   left: 0;
   top: 0;
@@ -40,11 +42,7 @@
   background-color: rgba(128, 128, 128, 0.7);
 }
 .disclaimer .disclaimer-message {
-  display: flex;
   position: relative;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   border-radius: 50px;
   height: 50%;
   width: 50%;
@@ -125,8 +123,6 @@
     font-size: 1.5rem;
   }
 }
-
-
 
 @media only screen and (max-width: 900px) {
   .disclaimer-message .contents {
