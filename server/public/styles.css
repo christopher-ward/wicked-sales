@@ -97,9 +97,16 @@
 .checkout-form input, .checkout-form textarea {
   border: #c9c9c9 solid 2px;
 }
+.checkout-form .form-group {
+  position: relative;
+}
+.form-group .input-feedback {
+  position: absolute;
+  bottom: -20px;
+}
 .checkout-form small, .disclaimer-message small {
   color: red;
-  margin-left: 10px;
+  margin-left: 3px;
   font-size: 0.85rem;
 }
 .checkout-form .fa-times, .disclaimer-message .fa-times {
@@ -177,6 +184,10 @@
   }
   .checkout h4 {
     font-size: 1.35rem;
+  }
+  .form-group .input-feedback.cvv {
+    left: -1px;
+    width: max-content;
   }
 }
 

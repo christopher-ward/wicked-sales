@@ -292,7 +292,7 @@ export default class CheckoutForm extends React.Component {
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
                 maxLength={65} />
-              <div className="d-flex">
+              <div className="d-flex input-feedback">
                 <i className={`fas ${nameResultVisual}`} />
                 <small>{this.state.nameCheck}</small>
               </div>
@@ -310,7 +310,7 @@ export default class CheckoutForm extends React.Component {
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
                   maxLength={16} />
-                <div className="d-flex">
+                <div className="d-flex input-feedback">
                   <i className={`fas ${creditCardResultVisual}`} />
                   <small>{this.state.creditCardCheck}</small>
                 </div>
@@ -327,7 +327,7 @@ export default class CheckoutForm extends React.Component {
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
                   maxLength={7} />
-                <div className="d-flex">
+                <div className="d-flex input-feedback">
                   <i className={`fas ${cardExpDateResultVisual}`} />
                   <small>{this.state.cardExpDateCheck}</small>
                 </div>
@@ -344,7 +344,7 @@ export default class CheckoutForm extends React.Component {
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
                   maxLength={4} />
-                <div className="d-flex">
+                <div className="d-flex input-feedback cvv">
                   <i className={`fas ${cardCVVResultVisual}`} />
                   <small>{this.state.cardCVVCheck}</small>
                 </div>
@@ -361,12 +361,12 @@ export default class CheckoutForm extends React.Component {
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
                 maxLength={156} />
-              <div className="d-flex">
+              <div className="d-flex input-feedback">
                 <i className={`fas ${addressResultVisual}`} />
                 <small>{this.state.addressCheck}</small>
               </div>
             </div>
-            <button className="btn btn-success" type="submit">Place Order</button>
+            <button className="btn btn-success mt-2" type="submit">Place Order</button>
           </form>
         </div>
       </div>
