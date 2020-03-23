@@ -28,23 +28,21 @@
   font-size: 1.15rem;
   margin: 1rem 1rem 1rem 0;
 }
-.disclaimer {
+.disclaimer, .disclaimer .disclaimer-message {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
+}
+.disclaimer {
+  position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
   background-color: rgba(128, 128, 128, 0.7);
 }
 .disclaimer .disclaimer-message {
-  display: flex;
   position: relative;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   border-radius: 50px;
   height: 50%;
   width: 50%;
@@ -99,9 +97,16 @@
 .checkout-form input, .checkout-form textarea {
   border: #c9c9c9 solid 2px;
 }
+.checkout-form .form-group {
+  position: relative;
+}
+.form-group .input-feedback {
+  position: absolute;
+  bottom: -20px;
+}
 .checkout-form small, .disclaimer-message small {
   color: red;
-  margin-left: 10px;
+  margin-left: 3px;
   font-size: 0.85rem;
 }
 .checkout-form .fa-times, .disclaimer-message .fa-times {
@@ -125,8 +130,6 @@
     font-size: 1.5rem;
   }
 }
-
-
 
 @media only screen and (max-width: 900px) {
   .disclaimer-message .contents {
@@ -181,6 +184,10 @@
   }
   .checkout h4 {
     font-size: 1.35rem;
+  }
+  .form-group .input-feedback.cvv {
+    left: -1px;
+    width: max-content;
   }
 }
 
