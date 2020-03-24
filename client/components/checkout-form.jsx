@@ -13,15 +13,14 @@ export default class CheckoutForm extends React.Component {
       creditCardCheck: '',
       cardExpDateCheck: '',
       cardCVVCheck: '',
-      addressCheck: '',
+      shippingAddressCheck: '',
       nameVisualFeedback: '',
       creditCardVisualFeedback: '',
       cardExpDateVisualFeedback: '',
       cardSecCodeVisualFeedback: '',
       addressVisualFeedback: '',
-      inputSelected: '', // inputSelected will hold the name of the input targetted on click of input
-      prevInput: '' // prevInput will be used to check previous input field
-      // This will be used to check input when switching to different input.
+      inputInvalid: '',
+      prevInput: ''
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -33,8 +32,18 @@ export default class CheckoutForm extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    const prevInput = this.state.prevInput;
     if (value.match(/\D/g) && target.classList.contains('number')) { return; }
-    // this.inputCheck(target);
+    const length = value.length;
+    const currentCheck = `${name}Check`;
+    if (this.state[currentCheck]) {
+      this.inputCheck(prevInput);
+      this.setState({
+        inputInvalid: name
+      });
+    } else if (this.state.inputInvalid === name && length < this.state[name].length) {
+      this.inputCheck(prevInput);
+    }
     this.setState({
       [name]: value
     });
@@ -104,12 +113,12 @@ export default class CheckoutForm extends React.Component {
       case 'shippingAddress':
         if (prevInput.value.length < 21) {
           this.setState({
-            addressCheck: 'Shipping Address required!',
+            shippingAddressCheck: 'Shipping Address required!',
             addressVisualFeedback: 'fa-times'
           });
         } else {
           this.setState({
-            addressCheck: '',
+            shippingAddressCheck: '',
             addressVisualFeedback: 'fa-check'
           });
         }
@@ -191,12 +200,12 @@ export default class CheckoutForm extends React.Component {
         case 'shippingAddress':
           if (prevInput.value.length < 21) {
             this.setState({
-              addressCheck: 'Shipping Address required!',
+              shippingAddressCheck: 'Shipping Address required!',
               addressVisualFeedback: 'fa-times'
             });
           } else {
             this.setState({
-              addressCheck: '',
+              shippingAddressCheck: '',
               addressVisualFeedback: 'fa-check'
             });
           }
@@ -257,18 +266,22 @@ export default class CheckoutForm extends React.Component {
       }
       if (shippingAddress.length < 21) {
         this.setState({
-          addressCheck: 'Shipping Address required!',
+          shippingAddressCheck: 'Shipping Address required!',
           addressVisualFeedback: 'fa-times'
         });
       } else {
         this.setState({
-          addressCheck: '',
+          shippingAddressCheck: '',
           addressVisualFeedback: 'fa-check'
         });
       }
       return false;
     }
     return true;
+  }
+
+  checkInputProgress() {
+
   }
 
   render() {
@@ -363,7 +376,7 @@ export default class CheckoutForm extends React.Component {
                 maxLength={156} />
               <div className="d-flex input-feedback">
                 <i className={`fas ${addressResultVisual}`} />
-                <small>{this.state.addressCheck}</small>
+                <small>{this.state.shippingAddressCheck}</small>
               </div>
             </div>
             <button className="btn btn-success mt-2" type="submit">Place Order</button>
