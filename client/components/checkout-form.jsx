@@ -5,20 +5,26 @@ export default class CheckoutForm extends React.Component {
     super(props);
     this.state = {
       name: '',
-      creditCard: '',
-      cardExpDate: '',
-      cardCVV: '',
-      shippingAddress: '',
       nameCheck: '',
-      creditCardCheck: '',
-      cardExpDateCheck: '',
-      cardCVVCheck: '',
-      shippingAddressCheck: '',
       nameVisualFeedback: '',
+      creditCard: '',
+      creditCardCheck: '',
       creditCardVisualFeedback: '',
+      cardExpDate: '',
+      cardExpDateCheck: '',
       cardExpDateVisualFeedback: '',
+      cardCVV: '',
+      cardCVVCheck: '',
       cardSecCodeVisualFeedback: '',
-      addressVisualFeedback: '',
+      emailAddress: '',
+      emailAddressCheck: '',
+      emailAddressVisualFeedback: '',
+      phoneNumber: '',
+      phoneNumberCheck: '',
+      phoneNumberVisualFeedback: '',
+      shippingAddress: '',
+      shippingAddressCheck: '',
+      shippingshippingAddressVisualFeedback: '',
       inputInvalid: '',
       prevInput: ''
     };
@@ -33,15 +39,17 @@ export default class CheckoutForm extends React.Component {
     const value = target.value;
     const name = target.name;
     const prevInput = this.state.prevInput;
-    if (value.match(/\D/g) && target.classList.contains('number')) { return; }
+    if (value.match(/\D/g) && target.classList.contains('number')) {
+      return;
+    }
     const length = value.length;
     const currentCheck = `${name}Check`;
-    if (this.state[currentCheck]) {
+    if (this.state[name][currentCheck]) {
       this.inputCheck(prevInput);
       this.setState({
         inputInvalid: name
       });
-    } else if (this.state.inputInvalid === name && length < this.state[name].length) {
+    } else if (this.state.inputInvalid === name && length < this.state[name].value.length) {
       this.inputCheck(prevInput);
     }
     this.setState({
@@ -57,6 +65,25 @@ export default class CheckoutForm extends React.Component {
 
   handleBlur(event) {
     const { prevInput } = this.state;
+    this.inputCheck(prevInput);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    if (!this.submitCheck()) {
+      return;
+    }
+    const orderObj = {
+      name: this.state.name,
+      creditCard: parseInt(this.state.creditCard),
+      phoneNumber: parseInt(this.state.phoneNumber) || 'N/A',
+      emailAddress: parseInt(this.state.emailAddress),
+      shippingAddress: this.state.shippingAddress
+    };
+    this.props.placeOrder(orderObj);
+  }
+
+  inputCheck(prevInput) {
     switch (prevInput.name) {
       case 'name':
         if (prevInput.value.length < 5) {
@@ -114,12 +141,25 @@ export default class CheckoutForm extends React.Component {
         if (prevInput.value.length < 21) {
           this.setState({
             shippingAddressCheck: 'Shipping Address required!',
-            addressVisualFeedback: 'fa-times'
+            shippingAddressVisualFeedback: 'fa-times'
           });
         } else {
           this.setState({
             shippingAddressCheck: '',
-            addressVisualFeedback: 'fa-check'
+            shippingAddressVisualFeedback: 'fa-check'
+          });
+        }
+        break;
+      case 'emailAddress':
+        if (prevInput.value.length < 6) {
+          this.setState({
+            emailAddressCheck: 'Email Address required!',
+            emailAddressVisualFeedback: 'fa-times'
+          });
+        } else {
+          this.setState({
+            emailAddressCheck: '',
+            emailAddressVisualFeedback: 'fa-check'
           });
         }
         break;
@@ -129,97 +169,9 @@ export default class CheckoutForm extends React.Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (!this.submitCheck()) {
-      return;
-    }
-    const orderObj = {
-      name: this.state.name,
-      creditCard: parseInt(this.state.creditCard),
-      shippingAddress: this.state.shippingAddress
-    };
-    this.props.placeOrder(orderObj);
-  }
-
-  inputCheck(prevInput) {
-    if (prevInput) {
-      switch (prevInput.name) {
-        case 'name':
-          if (prevInput.value.length < 5) {
-            this.setState({
-              nameCheck: 'Full name required!',
-              nameVisualFeedback: 'fa-times'
-            });
-          } else {
-            this.setState({
-              nameCheck: '',
-              nameVisualFeedback: 'fa-check'
-            });
-          }
-          break;
-        case 'creditCard':
-          if (prevInput.value.length < 16) {
-            this.setState({
-              creditCardCheck: 'Credit Card number required!',
-              creditCardVisualFeedback: 'fa-times'
-            });
-          } else {
-            this.setState({
-              creditCardCheck: '',
-              creditCardVisualFeedback: 'fa-check'
-            });
-          }
-          break;
-        case 'cardExpDate':
-          if (prevInput.value.length < 7) {
-            this.setState({
-              cardExpDateCheck: 'Exp. Date required!',
-              cardExpDateVisualFeedback: 'fa-times'
-            });
-          } else {
-            this.setState({
-              cardExpDateCheck: '',
-              cardExpDateVisualFeedback: 'fa-check'
-            });
-          }
-          break;
-        case 'cardCVV':
-          if (prevInput.value.length < 3) {
-            this.setState({
-              cardCVVCheck: 'CVV required!',
-              cardSecCodeVisualFeedback: 'fa-times'
-            });
-          } else {
-            this.setState({
-              cardCVVCheck: '',
-              cardSecCodeVisualFeedback: 'fa-check'
-            });
-          }
-          break;
-        case 'shippingAddress':
-          if (prevInput.value.length < 21) {
-            this.setState({
-              shippingAddressCheck: 'Shipping Address required!',
-              addressVisualFeedback: 'fa-times'
-            });
-          } else {
-            this.setState({
-              shippingAddressCheck: '',
-              addressVisualFeedback: 'fa-check'
-            });
-          }
-          break;
-        default:
-          // eslint-disable-next-line no-console
-          console.log('something went wrong in switch');
-      }
-    }
-  }
-
   submitCheck() {
-    const { name, creditCard, cardExpDate, cardCVV, shippingAddress } = this.state;
-    if (name.length < 5 || creditCard.length < 16 || cardExpDate.length < 7 || cardCVV.length < 3 || shippingAddress.length < 21) {
+    const { name, creditCard, cardExpDate, cardCVV, emailAddress, shippingAddress } = this.state;
+    if (name.length < 5 || creditCard.length < 16 || cardExpDate.length < 7 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
       if (name.length < 5) {
         this.setState({
           nameCheck: 'Full name required!',
@@ -267,12 +219,23 @@ export default class CheckoutForm extends React.Component {
       if (shippingAddress.length < 21) {
         this.setState({
           shippingAddressCheck: 'Shipping Address required!',
-          addressVisualFeedback: 'fa-times'
+          shippingAddressVisualFeedback: 'fa-times'
         });
       } else {
         this.setState({
           shippingAddressCheck: '',
-          addressVisualFeedback: 'fa-check'
+          shippingAddressVisualFeedback: 'fa-check'
+        });
+      }
+      if (emailAddress.length < 6) {
+        this.setState({
+          emailAddressCheck: 'Email Address required!',
+          emailAddressVisualFeedback: 'fa-times'
+        });
+      } else {
+        this.setState({
+          emailAddressCheck: '',
+          emailAddressVisualFeedback: 'fa-check'
         });
       }
       return false;
@@ -287,9 +250,11 @@ export default class CheckoutForm extends React.Component {
   render() {
     const nameResultVisual = this.state.nameVisualFeedback;
     const creditCardResultVisual = this.state.creditCardVisualFeedback;
-    const addressResultVisual = this.state.addressVisualFeedback;
+    const addressResultVisual = this.state.shippingAddressVisualFeedback;
     const cardExpDateResultVisual = this.state.cardExpDateVisualFeedback;
     const cardCVVResultVisual = this.state.cardSecCodeVisualFeedback;
+    const emailAddressResultVisual = this.state.emailAddressVisualFeedback;
+    const phoneNumberResultVisual = this.state.phoneNumberVisualFeedback;
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -360,6 +325,42 @@ export default class CheckoutForm extends React.Component {
                 <div className="d-flex input-feedback cvv">
                   <i className={`fas ${cardCVVResultVisual}`} />
                   <small>{this.state.cardCVVCheck}</small>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="d-flex col-lg-6 col-12 flex-column form-group">
+                <label htmlFor="emailAddress">Email</label>
+                <input
+                  type="text"
+                  name="emailAddress"
+                  id="emailAddress"
+                  className="email"
+                  value={this.state.emailAddress}
+                  onChange={this.handleFormChange}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  maxLength={254} />
+                <div className="d-flex input-feedback">
+                  <i className={`fas ${emailAddressResultVisual}`} />
+                  <small>{this.state.emailAddressCheck}</small>
+                </div>
+              </div>
+              <div className="d-flex flex-column col-lg-6 col-12 form-group">
+                <label htmlFor="phoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  className="phone number"
+                  value={this.state.phoneNumber}
+                  onChange={this.handleFormChange}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  maxLength={11} />
+                <div className="d-flex input-feedback">
+                  <i className={`fas ${phoneNumberResultVisual}`} />
+                  <small>{this.state.phoneNumberCheck}</small>
                 </div>
               </div>
             </div>
