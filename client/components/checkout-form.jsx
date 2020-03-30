@@ -41,9 +41,10 @@ export default class CheckoutForm extends React.Component {
     const target = event.target;
     let value = target.value;
     const name = target.name;
+    const classList = target.classList;
     const prevInput = this.state.prevInput;
-    if (target.classList.contains('number')) {
-      if (target.classList.contains('credit')) {
+    if (classList.contains('number')) {
+      if (classList.contains('credit')) {
         let valueRaw = value;
         valueRaw = valueRaw.split('-').join('');
         if (valueRaw.length > 0) {
@@ -55,20 +56,19 @@ export default class CheckoutForm extends React.Component {
         }
       } else if (value.match(/\D/g)) {
         return;
-      } else if (target.classList.contains('expiration')) {
-        if (target.classList.contains('month')) {
-          if (value.length === 2 && value[0] > 1) {
-            value = 12;
-          } else if (value.length === 2 && value[0] === '1') {
-            if (value[1] > 2) {
+      } else if (classList.contains('expiration')) {
+        if (classList.contains('month')) {
+          if (value.length === 2) {
+            if (value[0] > 1) {
               value = 12;
+            } else if (value[0] === '1') {
+              if (value[1] > 2) {
+                value = 12;
+              }
             }
           }
         }
       }
-      /**
-       * If year is current year, month must be later than current month
-       */
     }
     const length = value.length;
     const currentCheck = `${name}Check`;
@@ -92,13 +92,110 @@ export default class CheckoutForm extends React.Component {
   }
 
   handleBlur(event) {
+    const date = new Date();
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
     const { prevInput } = this.state;
+    const tempInput = prevInput;
+    const classList = event.target.classList;
     let value = event.target.value;
-    if (value.length === 1) {
-      value = `0${value}`;
-      this.setState({
-        cardExpMon: value
-      });
+    if (classList.contains('month')) {
+      if (value === '0' || value === '') {
+        this.setState({
+          cardExpMon: ''
+        });
+        tempInput.value = '';
+      } else if (value.length === 1) {
+        value = `0${value}`;
+        this.setState({
+          cardExpMon: value
+        });
+        tempInput.value = value;
+      }
+      if (this.state.cardExpYear && value !== '') {
+        if (this.state.cardExpYear === `${currentYear}`) {
+          if (value <= currentMonth) {
+            this.setState({
+              cardExpMonCheck: 'Month is expired',
+              cardExpMonVisualFeedback: 'fa-times'
+            });
+          } else {
+            this.setState({
+              cardExpMonCheck: '',
+              cardExpMonVisualFeedback: 'fa-check'
+            });
+          }
+        }
+        return;
+      }
+      this.inputCheck(tempInput);
+    } else if (classList.contains('year')) {
+      if (value.length === 2) {
+        value = `20${value}`;
+        if (value < currentYear) {
+          this.setState({
+            cardExpYearCheck: `Year is before ${currentYear}`,
+            cardExpYearVisualFeedback: 'fa-times'
+          });
+          return;
+        } else if (value >= currentYear) {
+          this.setState({
+            cardExpYear: value
+          });
+          if (this.state.cardExpMon) {
+            if (value === `${currentYear}`) {
+              if (this.state.cardExpMon <= currentMonth) {
+                this.setState({
+                  cardExpMonCheck: 'Month is expired',
+                  cardExpMonVisualFeedback: 'fa-times'
+                });
+              } else {
+                this.setState({
+                  cardExpMonCheck: '',
+                  cardExpMonVisualFeedback: 'fa-check'
+                });
+              }
+            } else {
+              this.setState({
+                cardExpMonCheck: '',
+                cardExpMonVisualFeedback: 'fa-check'
+              });
+            }
+          }
+          tempInput.value = value;
+          this.inputCheck(tempInput);
+          return;
+        }
+      } else if (value.length === 4) {
+        if (value < currentYear) {
+          this.setState({
+            cardExpYearCheck: `Year is before ${currentYear}`,
+            cardExpYearVisualFeedback: 'fa-times'
+          });
+          return;
+        } else if (value >= currentYear) {
+          if (this.state.cardExpMon) {
+            if (value === `${currentYear}`) {
+              if (this.state.cardExpMon <= currentMonth) {
+                this.setState({
+                  cardExpMonCheck: 'Month is expired',
+                  cardExpMonVisualFeedback: 'fa-times'
+                });
+              } else {
+                this.setState({
+                  cardExpMonCheck: '',
+                  cardExpMonVisualFeedback: 'fa-check'
+                });
+              }
+            } else {
+              this.setState({
+                cardExpMonCheck: '',
+                cardExpMonVisualFeedback: 'fa-check'
+              });
+            }
+          }
+        }
+      }
     }
     this.inputCheck(prevInput);
   }
@@ -295,7 +392,7 @@ export default class CheckoutForm extends React.Component {
                   name="cardExpMon"
                   id="cardExpMon"
                   className="expiration month number"
-                  placeholder="ex '06'"
+                  placeholder="ex '10'"
                   value={this.state.cardExpMon}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
