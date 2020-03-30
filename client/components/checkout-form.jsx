@@ -39,6 +39,16 @@ export default class CheckoutForm extends React.Component {
     const value = target.value;
     const name = target.name;
     const prevInput = this.state.prevInput;
+    if (target.classList.contains('credit') && value.length > 1) {
+      let valueRaw = value;
+      valueRaw = valueRaw.split('-').join('');
+      // this.inputCheck(value);
+      const valueFinal = valueRaw.match(/.{1,4}/g).join('-');
+      this.setState({
+        creditCard: valueFinal
+      });
+      return;
+    }
     if (value.match(/\D/g) && target.classList.contains('number')) {
       return;
     }
@@ -225,13 +235,14 @@ export default class CheckoutForm extends React.Component {
                   type="text"
                   name="creditCard"
                   id="creditCard"
-                  className="number"
+                  className="credit number"
                   value={this.state.creditCard}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  minLength={16}
-                  maxLength={16} />
+                  onKeyUp={this.addSymbol}
+                  minLength={19}
+                  maxLength={19} />
                 <div className="d-flex input-feedback">
                   <i className={`fas ${creditCardResultVisual}`} />
                   <small>{this.state.creditCardCheck}</small>
