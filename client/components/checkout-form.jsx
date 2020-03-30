@@ -10,9 +10,12 @@ export default class CheckoutForm extends React.Component {
       creditCard: '',
       creditCardCheck: '',
       creditCardVisualFeedback: '',
-      cardExpDate: '',
-      cardExpDateCheck: '',
-      cardExpDateVisualFeedback: '',
+      cardExpMon: '',
+      cardExpMonCheck: '',
+      cardExpMonVisualFeedback: '',
+      cardExpYear: '',
+      cardExpYearCheck: '',
+      cardExpYearVisualFeedback: '',
       cardCVV: '',
       cardCVVCheck: '',
       cardCVVVisualFeedback: '',
@@ -36,21 +39,34 @@ export default class CheckoutForm extends React.Component {
 
   handleFormChange(event) {
     const target = event.target;
-    const value = target.value;
+    let value = target.value;
     const name = target.name;
     const prevInput = this.state.prevInput;
-    if (target.classList.contains('credit') && value.length > 1) {
-      let valueRaw = value;
-      valueRaw = valueRaw.split('-').join('');
-      // this.inputCheck(value);
-      const valueFinal = valueRaw.match(/.{1,4}/g).join('-');
-      this.setState({
-        creditCard: valueFinal
-      });
-      return;
-    }
-    if (value.match(/\D/g) && target.classList.contains('number')) {
-      return;
+    if (target.classList.contains('number')) {
+      if (target.classList.contains('credit')) {
+        let valueRaw = value;
+        valueRaw = valueRaw.split('-').join('');
+        if (valueRaw.length > 0) {
+          if (valueRaw[valueRaw.length - 1].match(/\d/g)) {
+            value = valueRaw.match(/.{1,4}/g).join('-');
+          } else {
+            return;
+          }
+        }
+      } else if (value.match(/\D/g)) {
+        return;
+      }
+      /**
+       * else if (target.classList.contains('expiration')) {
+       *   if (target.classList.contains('month')) {
+       *     if (value.length === 1 && )
+       *   }
+       * }
+       */
+      /*
+      Check lenth of month. If, on blur, length is one then prepend 0 to value
+      if length is 2, then check first value is 0 or 1, then if 1st value is 1 check that second value is 2 or less
+      */
     }
     const length = value.length;
     const currentCheck = `${name}Check`;
@@ -75,6 +91,11 @@ export default class CheckoutForm extends React.Component {
 
   handleBlur(event) {
     const { prevInput } = this.state;
+    // if (event.target.value.length === 1) {
+    //   this.setState({
+    //     this.state.cardExpMon
+    //   })
+    // }
     this.inputCheck(prevInput);
   }
 
@@ -114,10 +135,16 @@ export default class CheckoutForm extends React.Component {
             creditCardVisualFeedback: 'fa-times'
           });
           break;
-        case 'cardExpDate':
+        case 'cardExpMon':
           this.setState({
-            cardExpDateCheck: 'Exp. Date required!',
-            cardExpDateVisualFeedback: 'fa-times'
+            cardExpMonCheck: 'Exp Mon required!',
+            cardExpMonVisualFeedback: 'fa-times'
+          });
+          break;
+        case 'cardExpYear':
+          this.setState({
+            cardExpYearCheck: 'Exp Year required!',
+            cardExpYearVisualFeedback: 'fa-times'
           });
           break;
         case 'cardCVV':
@@ -156,8 +183,8 @@ export default class CheckoutForm extends React.Component {
   }
 
   submitCheck() {
-    const { name, creditCard, cardExpDate, cardCVV, emailAddress, shippingAddress } = this.state;
-    if (name.length < 5 || creditCard.length < 16 || cardExpDate.length < 7 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
+    const { name, creditCard, cardExpMon, cardExpYear, cardCVV, emailAddress, shippingAddress } = this.state;
+    if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
       if (name.length < 5) {
         this.setState({
           nameCheck: 'Full name required!',
@@ -168,10 +195,15 @@ export default class CheckoutForm extends React.Component {
           creditCardCheck: 'Credit Card number required!',
           creditCardVisualFeedback: 'fa-times'
         });
-      } else if (cardExpDate.length < 7) {
+      } else if (cardExpMon.length < 1) {
         this.setState({
-          cardExpDateCheck: 'Exp. Date required!',
-          cardExpDateVisualFeedback: 'fa-times'
+          cardExpMonCheck: 'Exp Mon required!',
+          cardExpMonVisualFeedback: 'fa-times'
+        });
+      } else if (cardExpYear.length < 4) {
+        this.setState({
+          cardExpYearCheck: 'Exp Year required!',
+          cardExpYearVisualFeedback: 'fa-times'
         });
       } else if (cardCVV.length < 3) {
         this.setState({
@@ -203,7 +235,8 @@ export default class CheckoutForm extends React.Component {
     const nameResultVisual = this.state.nameVisualFeedback;
     const creditCardResultVisual = this.state.creditCardVisualFeedback;
     const addressResultVisual = this.state.shippingAddressVisualFeedback;
-    const cardExpDateResultVisual = this.state.cardExpDateVisualFeedback;
+    const cardExpMonResultVisual = this.state.cardExpMonVisualFeedback;
+    const cardExpYearResultVisual = this.state.cardExpYearVisualFeedback;
     const cardCVVResultVisual = this.state.cardCVVVisualFeedback;
     const emailAddressResultVisual = this.state.emailAddressVisualFeedback;
     const phoneNumberResultVisual = this.state.phoneNumberVisualFeedback;
@@ -217,6 +250,7 @@ export default class CheckoutForm extends React.Component {
                 type="text"
                 name="name"
                 id="name"
+                placeholder="Your Name"
                 value={this.state.name}
                 onChange={this.handleFormChange}
                 onFocus={this.handleFocus}
@@ -236,6 +270,7 @@ export default class CheckoutForm extends React.Component {
                   name="creditCard"
                   id="creditCard"
                   className="credit number"
+                  placeholder="1111-2222-3333-4444"
                   value={this.state.creditCard}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -248,25 +283,45 @@ export default class CheckoutForm extends React.Component {
                   <small>{this.state.creditCardCheck}</small>
                 </div>
               </div>
-              <div className="d-flex flex-column col-lg-4 col-8 form-group">
-                <label htmlFor="cardExpDate">Expiration Date</label>
+              <div className="d-flex flex-column col-lg-3 col-6 form-group">
+                <label htmlFor="cardExpMon">Expiration Month</label>
                 <input
                   type="text"
-                  name="cardExpDate"
-                  id="cardExpDate"
-                  className="number"
-                  value={this.state.cardExpDate}
+                  name="cardExpMon"
+                  id="cardExpMon"
+                  className="expiration month number"
+                  placeholder="ex '06'"
+                  value={this.state.cardExpMon}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  minLength={7}
-                  maxLength={7} />
+                  minLength={1}
+                  maxLength={2} />
                 <div className="d-flex input-feedback">
-                  <i className={`fas ${cardExpDateResultVisual}`} />
-                  <small>{this.state.cardExpDateCheck}</small>
+                  <i className={`fas ${cardExpMonResultVisual}`} />
+                  <small>{this.state.cardExpMonCheck}</small>
                 </div>
               </div>
-              <div className="d-flex flex-column col-lg-2 col-4 form-group">
+              <div className="d-flex flex-column col-lg-3 col-6 form-group">
+                <label htmlFor="cardExpYear">Expiration Year</label>
+                <input
+                  type="text"
+                  name="cardExpYear"
+                  id="cardExpYear"
+                  className="expiration year number"
+                  placeholder="ex '2021'"
+                  value={this.state.cardExpYear}
+                  onChange={this.handleFormChange}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  minLength={4}
+                  maxLength={4} />
+                <div className="d-flex input-feedback">
+                  <i className={`fas ${cardExpYearResultVisual}`} />
+                  <small>{this.state.cardExpYearCheck}</small>
+                </div>
+              </div>
+              <div className="d-flex flex-column col-lg-2 col-5 form-group">
                 <label htmlFor="cardCVV">CVV</label>
                 <input
                   type="text"
@@ -284,8 +339,23 @@ export default class CheckoutForm extends React.Component {
                   <small>{this.state.cardCVVCheck}</small>
                 </div>
               </div>
-            </div>
-            <div className="row">
+              <div className="d-flex flex-column col-lg-4 col-7 form-group">
+                <label htmlFor="phoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  className="phone number"
+                  value={this.state.phoneNumber}
+                  onChange={this.handleFormChange}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  maxLength={11} />
+                <div className="d-flex input-feedback">
+                  <i className={`fas ${phoneNumberResultVisual}`} />
+                  <small>{this.state.phoneNumberCheck}</small>
+                </div>
+              </div>
               <div className="d-flex col-lg-6 col-12 flex-column form-group">
                 <label htmlFor="emailAddress">Email</label>
                 <input
@@ -302,23 +372,6 @@ export default class CheckoutForm extends React.Component {
                 <div className="d-flex input-feedback">
                   <i className={`fas ${emailAddressResultVisual}`} />
                   <small>{this.state.emailAddressCheck}</small>
-                </div>
-              </div>
-              <div className="d-flex flex-column col-lg-6 col-12 form-group">
-                <label htmlFor="phoneNumber">Phone Number</label>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                  className="phone number"
-                  value={this.state.phoneNumber}
-                  onChange={this.handleFormChange}
-                  onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                  maxLength={11} />
-                <div className="d-flex input-feedback">
-                  <i className={`fas ${phoneNumberResultVisual}`} />
-                  <small>{this.state.phoneNumberCheck}</small>
                 </div>
               </div>
             </div>

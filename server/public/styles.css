@@ -96,9 +96,13 @@
 }
 .checkout-form input, .checkout-form textarea {
   border: #c9c9c9 solid 2px;
+  text-align: center;
 }
 .checkout-form .form-group {
   position: relative;
+}
+.checkout-form ::placeholder{
+  text-align: center;
 }
 .form-group .input-feedback {
   position: absolute;
@@ -108,6 +112,7 @@
   color: red;
   margin-left: 3px;
   font-size: 0.85rem;
+  width: max-content;
 }
 .checkout-form .fa-times, .disclaimer-message .fa-times {
   color: red;
@@ -186,7 +191,9 @@
     font-size: 1.35rem;
   }
   .form-group .input-feedback.cvv {
-    left: -1px;
+    width: max-content;
+  }
+  label {
     width: max-content;
   }
 }
