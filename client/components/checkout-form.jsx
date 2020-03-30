@@ -41,9 +41,10 @@ export default class CheckoutForm extends React.Component {
     const target = event.target;
     let value = target.value;
     const name = target.name;
+    const classList = target.classList;
     const prevInput = this.state.prevInput;
-    if (target.classList.contains('number')) {
-      if (target.classList.contains('credit')) {
+    if (classList.contains('number')) {
+      if (classList.contains('credit')) {
         let valueRaw = value;
         valueRaw = valueRaw.split('-').join('');
         if (valueRaw.length > 0) {
@@ -55,18 +56,19 @@ export default class CheckoutForm extends React.Component {
         }
       } else if (value.match(/\D/g)) {
         return;
+      } else if (classList.contains('expiration')) {
+        if (classList.contains('month')) {
+          if (value.length === 2) {
+            if (value[0] > 1) {
+              value = 12;
+            } else if (value[0] === '1') {
+              if (value[1] > 2) {
+                value = 12;
+              }
+            }
+          }
+        }
       }
-      /**
-       * else if (target.classList.contains('expiration')) {
-       *   if (target.classList.contains('month')) {
-       *     if (value.length === 1 && )
-       *   }
-       * }
-       */
-      /*
-      Check lenth of month. If, on blur, length is one then prepend 0 to value
-      if length is 2, then check first value is 0 or 1, then if 1st value is 1 check that second value is 2 or less
-      */
     }
     const length = value.length;
     const currentCheck = `${name}Check`;
@@ -90,12 +92,111 @@ export default class CheckoutForm extends React.Component {
   }
 
   handleBlur(event) {
+    const date = new Date();
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
     const { prevInput } = this.state;
-    // if (event.target.value.length === 1) {
-    //   this.setState({
-    //     this.state.cardExpMon
-    //   })
-    // }
+    const tempInput = prevInput;
+    const classList = event.target.classList;
+    let value = event.target.value;
+    if (classList.contains('month')) {
+      if (value === '0' || value === '') {
+        this.setState({
+          cardExpMon: ''
+        });
+        tempInput.value = '';
+      } else if (value.length === 1) {
+        value = `0${value}`;
+        this.setState({
+          cardExpMon: value
+        });
+        tempInput.value = value;
+      }
+      if (this.state.cardExpYear && value !== '') {
+        if (this.state.cardExpYear === `${currentYear}`) {
+          if (value <= currentMonth) {
+            this.setState({
+              cardExpMonCheck: 'Month is expired',
+              cardExpMonVisualFeedback: 'fa-times'
+            });
+          } else {
+            this.setState({
+              cardExpMonCheck: '',
+              cardExpMonVisualFeedback: 'fa-check'
+            });
+          }
+        }
+        return;
+      }
+      this.inputCheck(tempInput);
+    } else if (classList.contains('year')) {
+      if (value.length === 2) {
+        value = `20${value}`;
+        if (value < currentYear) {
+          this.setState({
+            cardExpYearCheck: `Year is before ${currentYear}`,
+            cardExpYearVisualFeedback: 'fa-times'
+          });
+          return;
+        } else if (value >= currentYear) {
+          this.setState({
+            cardExpYear: value
+          });
+          if (this.state.cardExpMon) {
+            if (value === `${currentYear}`) {
+              if (this.state.cardExpMon <= currentMonth) {
+                this.setState({
+                  cardExpMonCheck: 'Month is expired',
+                  cardExpMonVisualFeedback: 'fa-times'
+                });
+              } else {
+                this.setState({
+                  cardExpMonCheck: '',
+                  cardExpMonVisualFeedback: 'fa-check'
+                });
+              }
+            } else {
+              this.setState({
+                cardExpMonCheck: '',
+                cardExpMonVisualFeedback: 'fa-check'
+              });
+            }
+          }
+          tempInput.value = value;
+          this.inputCheck(tempInput);
+          return;
+        }
+      } else if (value.length === 4) {
+        if (value < currentYear) {
+          this.setState({
+            cardExpYearCheck: `Year is before ${currentYear}`,
+            cardExpYearVisualFeedback: 'fa-times'
+          });
+          return;
+        } else if (value >= currentYear) {
+          if (this.state.cardExpMon) {
+            if (value === `${currentYear}`) {
+              if (this.state.cardExpMon <= currentMonth) {
+                this.setState({
+                  cardExpMonCheck: 'Month is expired',
+                  cardExpMonVisualFeedback: 'fa-times'
+                });
+              } else {
+                this.setState({
+                  cardExpMonCheck: '',
+                  cardExpMonVisualFeedback: 'fa-check'
+                });
+              }
+            } else {
+              this.setState({
+                cardExpMonCheck: '',
+                cardExpMonVisualFeedback: 'fa-check'
+              });
+            }
+          }
+        }
+      }
+    }
     this.inputCheck(prevInput);
   }
 
@@ -111,7 +212,8 @@ export default class CheckoutForm extends React.Component {
       emailAddress: parseInt(this.state.emailAddress),
       shippingAddress: this.state.shippingAddress
     };
-    this.props.placeOrder(orderObj);
+    // console.log(orderObj); // For Developing to see what orderObj will look like
+    this.props.placeOrder(orderObj); // Uncomment when working on fetch, backend, or committing
   }
 
   inputCheck(prevInput) {
@@ -263,7 +365,7 @@ export default class CheckoutForm extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="d-flex col-lg-6 col-12 flex-column form-group">
+              <div className="d-flex col-lg-4 col-12 flex-column form-group">
                 <label htmlFor="creditCard">Credit Card</label>
                 <input
                   type="text"
@@ -290,7 +392,7 @@ export default class CheckoutForm extends React.Component {
                   name="cardExpMon"
                   id="cardExpMon"
                   className="expiration month number"
-                  placeholder="ex '06'"
+                  placeholder="ex '10'"
                   value={this.state.cardExpMon}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -340,7 +442,7 @@ export default class CheckoutForm extends React.Component {
                   <small>{this.state.cardCVVCheck}</small>
                 </div>
               </div>
-              <div className="d-flex flex-column col-lg-4 col-7 form-group">
+              <div className="d-flex flex-column col-lg-5 col-7 form-group">
                 <label htmlFor="phoneNumber">Phone Number</label>
                 <input
                   type="text"
@@ -358,7 +460,7 @@ export default class CheckoutForm extends React.Component {
                   <small>{this.state.phoneNumberCheck}</small>
                 </div>
               </div>
-              <div className="d-flex col-lg-6 col-12 flex-column form-group">
+              <div className="d-flex col-lg-7 col-12 flex-column form-group">
                 <label htmlFor="emailAddress">Email</label>
                 <input
                   type="text"
@@ -384,7 +486,7 @@ export default class CheckoutForm extends React.Component {
                 type="textarea"
                 name="shippingAddress"
                 id="address"
-                placeholder={'123 This St\nThat City, ST 99999'}
+                placeholder={'123 This Rd\nThat City, ST 99999'}
                 value={this.state.shippingAddress}
                 onChange={this.handleFormChange}
                 onFocus={this.handleFocus}
