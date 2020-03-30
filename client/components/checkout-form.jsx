@@ -328,6 +328,7 @@ export default class CheckoutForm extends React.Component {
                   name="cardCVV"
                   id="cardCVV"
                   className="number"
+                  placeholder="ex '123'"
                   value={this.state.cardCVV}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -346,6 +347,7 @@ export default class CheckoutForm extends React.Component {
                   name="phoneNumber"
                   id="phoneNumber"
                   className="phone number"
+                  placeholder="(281)330-8004"
                   value={this.state.phoneNumber}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -363,6 +365,7 @@ export default class CheckoutForm extends React.Component {
                   name="emailAddress"
                   id="emailAddress"
                   className="email"
+                  placeholder="email@domain.com"
                   value={this.state.emailAddress}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -381,6 +384,7 @@ export default class CheckoutForm extends React.Component {
                 type="textarea"
                 name="shippingAddress"
                 id="address"
+                placeholder={'123 This St\nThat City, ST 99999'}
                 value={this.state.shippingAddress}
                 onChange={this.handleFormChange}
                 onFocus={this.handleFocus}

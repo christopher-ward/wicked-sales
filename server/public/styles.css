@@ -96,13 +96,12 @@
 }
 .checkout-form input, .checkout-form textarea {
   border: #c9c9c9 solid 2px;
+}
+.checkout-form input {
   text-align: center;
 }
 .checkout-form .form-group {
   position: relative;
-}
-.checkout-form ::placeholder{
-  text-align: center;
 }
 .form-group .input-feedback {
   position: absolute;
