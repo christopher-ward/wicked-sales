@@ -121,6 +121,19 @@
 .disclaimer-message small.go {
   color: rgb(18, 221, 18);
 }
+div.checkout-button-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+h5.checkout-price {
+  text-align: right;
+  line-height: 1.35rem;
+  font-size: 1.35rem;
+  margin: 0;
+  padding: 0;
+}
 .hidden {
   display: none!important;
 }
@@ -213,7 +226,7 @@
 }
 
 @media only screen and (max-width: 375px) {
-  .checkout h4 {
+  .checkout h4, h5.checkout-price {
     font-size: 1.25rem;
   }
 }

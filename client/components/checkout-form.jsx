@@ -23,6 +23,7 @@ export default class CheckoutForm extends React.Component {
       emailAddressCheck: '',
       emailAddressVisualFeedback: '',
       phoneNumber: '',
+      phoneNumberRaw: '',
       phoneNumberCheck: '',
       phoneNumberVisualFeedback: '',
       shippingAddress: '',
@@ -53,6 +54,23 @@ export default class CheckoutForm extends React.Component {
           } else {
             return;
           }
+        }
+      } else if (classList.contains('phone')) {
+        let valueRaw = value;
+        valueRaw = valueRaw.split(/[-+ ()]/g).join('');
+        if (valueRaw.length > 0) {
+          if (valueRaw[valueRaw.length - 1].match(/\D/g) || valueRaw.length > 11) {
+            return;
+          }
+          this.setState({
+            phoneNumberRaw: valueRaw
+          });
+        } else if (valueRaw.length === 0) {
+          this.setState({
+            phoneNumberRaw: '',
+            phoneNumberCheck: '',
+            phoneNumberVisualFeedback: 'fa-check'
+          });
         }
       } else if (value.match(/\D/g)) {
         return;
@@ -208,8 +226,8 @@ export default class CheckoutForm extends React.Component {
     const orderObj = {
       name: this.state.name,
       creditCard: parseInt(this.state.creditCard),
-      phoneNumber: parseInt(this.state.phoneNumber) || 'N/A',
-      emailAddress: parseInt(this.state.emailAddress),
+      phoneNumber: parseInt(this.state.phoneNumberRaw) || null,
+      emailAddress: this.state.emailAddress,
       shippingAddress: this.state.shippingAddress
     };
     // console.log(orderObj); // For Developing to see what orderObj will look like
@@ -285,14 +303,14 @@ export default class CheckoutForm extends React.Component {
   }
 
   submitCheck() {
-    const { name, creditCard, cardExpMon, cardExpYear, cardCVV, emailAddress, shippingAddress } = this.state;
+    const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumber, emailAddress, shippingAddress } = this.state;
     if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
       if (name.length < 5) {
         this.setState({
           nameCheck: 'Full name required!',
           nameVisualFeedback: 'fa-times'
         });
-      } else if (creditCard.length < 16) {
+      } else if (creditCard.length < 19) {
         this.setState({
           creditCardCheck: 'Credit Card number required!',
           creditCardVisualFeedback: 'fa-times'
@@ -329,6 +347,24 @@ export default class CheckoutForm extends React.Component {
         });
       }
       return false;
+    } else if (phoneNumber) {
+      const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
+      const { length } = valueRaw;
+      if (length >= 10 & length < 12) {
+        return true;
+      }
+      if (length < 10) {
+        this.setState({
+          phoneNumberCheck: 'Remove or complete',
+          phoneNumberVisualFeedback: 'fa-times'
+        });
+      } else if (length < 1) {
+        this.setState({
+          phoneNumberCheck: '',
+          phoneNumberVisualFeedback: 'fa-check'
+        });
+      }
+      return false;
     }
     return true;
   }
@@ -342,10 +378,15 @@ export default class CheckoutForm extends React.Component {
     const cardCVVResultVisual = this.state.cardCVVVisualFeedback;
     const emailAddressResultVisual = this.state.emailAddressVisualFeedback;
     const phoneNumberResultVisual = this.state.phoneNumberVisualFeedback;
+    const cartItemsArray = this.props.cartItems;
+    let totalPrice = null;
+    cartItemsArray.forEach(cartItem => {
+      totalPrice += cartItem.price;
+    });
     return (
       <div className="container">
         <div className="row justify-content-center">
-          <form className="col-8 align-items-center my-3 px-1 checkout-form" onSubmit={this.handleSubmit}>
+          <form className="col-8 align-items-center my-2 px-1 checkout-form" onSubmit={this.handleSubmit}>
             <div className="d-flex flex-column form-group">
               <label htmlFor="name">Full Name</label>
               <input
@@ -392,7 +433,7 @@ export default class CheckoutForm extends React.Component {
                   name="cardExpMon"
                   id="cardExpMon"
                   className="expiration month number"
-                  placeholder="ex '10'"
+                  placeholder="'MM'"
                   value={this.state.cardExpMon}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -411,7 +452,7 @@ export default class CheckoutForm extends React.Component {
                   name="cardExpYear"
                   id="cardExpYear"
                   className="expiration year number"
-                  placeholder="ex '2021'"
+                  placeholder="'YY' or 'YYYY'"
                   value={this.state.cardExpYear}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
@@ -449,18 +490,18 @@ export default class CheckoutForm extends React.Component {
                   name="phoneNumber"
                   id="phoneNumber"
                   className="phone number"
-                  placeholder="(281)330-8004"
+                  placeholder="281 330 8004"
                   value={this.state.phoneNumber}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  maxLength={11} />
+                  maxLength={20} />
                 <div className="d-flex input-feedback">
                   <i className={`fas ${phoneNumberResultVisual}`} />
                   <small>{this.state.phoneNumberCheck}</small>
                 </div>
               </div>
-              <div className="d-flex col-lg-7 col-12 flex-column form-group">
+              <div className="d-flex flex-column col-lg-7 col-12 form-group">
                 <label htmlFor="emailAddress">Email</label>
                 <input
                   type="text"
@@ -498,7 +539,10 @@ export default class CheckoutForm extends React.Component {
                 <small>{this.state.shippingAddressCheck}</small>
               </div>
             </div>
-            <button className="btn btn-success mt-2" type="submit">Place Order</button>
+            <div className="checkout-button-price">
+              <button className="btn btn-success" type="submit">Place Order</button>
+              <h5 className="col-6 col-lg-8 checkout-price">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h5>
+            </div>
           </form>
         </div>
       </div>
