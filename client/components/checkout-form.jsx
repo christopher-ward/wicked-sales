@@ -223,9 +223,11 @@ export default class CheckoutForm extends React.Component {
     if (!this.submitCheck()) {
       return;
     }
+    let creditCardRaw = this.state.creditCard;
+    creditCardRaw = creditCardRaw.split('-').join('');
     const orderObj = {
       name: this.state.name,
-      creditCard: parseInt(this.state.creditCard),
+      creditCard: parseInt(creditCardRaw),
       phoneNumber: parseInt(this.state.phoneNumberRaw) || null,
       emailAddress: this.state.emailAddress,
       shippingAddress: this.state.shippingAddress
