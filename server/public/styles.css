@@ -223,10 +223,18 @@ h5.checkout-price {
   .products {
     margin: 0 1rem!important;
   }
+  label[for="phoneNumber"] {
+    position: relative;
+    left: -15px;
+  }
 }
 
 @media only screen and (max-width: 375px) {
   .checkout h4, h5.checkout-price {
     font-size: 1.25rem;
+  }
+  label[for="phoneNumber"] {
+    position: relative;
+    left: -20px;
   }
 }

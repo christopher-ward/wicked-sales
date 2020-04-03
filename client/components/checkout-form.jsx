@@ -478,7 +478,7 @@ export default class CheckoutForm extends React.Component {
                 </div>
               </div>
               <div className="d-flex flex-column col-lg-5 col-7 form-group">
-                <label htmlFor="phoneNumber">Phone Number</label>
+                <label htmlFor="phoneNumber">Phone Number (optional)</label>
                 <input
                   type="text"
                   name="phoneNumber"
