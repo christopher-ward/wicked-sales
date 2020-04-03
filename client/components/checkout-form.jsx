@@ -43,7 +43,6 @@ export default class CheckoutForm extends React.Component {
     let value = target.value;
     const name = target.name;
     const classList = target.classList;
-    const prevInput = this.state.prevInput;
     if (classList.contains('number')) {
       if (classList.contains('credit')) {
         let valueRaw = value;
@@ -67,9 +66,7 @@ export default class CheckoutForm extends React.Component {
           });
         } else if (valueRaw.length === 0) {
           this.setState({
-            phoneNumberRaw: '',
-            phoneNumberCheck: '',
-            phoneNumberVisualFeedback: 'fa-check'
+            phoneNumberRaw: ''
           });
         }
       } else if (value.match(/\D/g)) {
@@ -88,18 +85,12 @@ export default class CheckoutForm extends React.Component {
         }
       }
     }
-    const length = value.length;
     const currentCheck = `${name}Check`;
-    if (this.state[name][currentCheck]) {
-      this.inputCheck(prevInput);
-      this.setState({
-        inputInvalid: name
-      });
-    } else if (this.state.inputInvalid === name && length < this.state[name].value.length) {
-      this.inputCheck(prevInput);
-    }
+    const currentVisualFeedback = `${name}VisualFeedback`;
     this.setState({
-      [name]: value
+      [name]: value,
+      [currentCheck]: '',
+      [currentVisualFeedback]: ''
     });
   }
 
@@ -232,7 +223,7 @@ export default class CheckoutForm extends React.Component {
       emailAddress: this.state.emailAddress,
       shippingAddress: this.state.shippingAddress
     };
-    // console.log(orderObj); // For Developing to see what orderObj will look like
+    // console.log(orderObj); // For Developing to see what orderObj will look like. Remove before master
     this.props.placeOrder(orderObj); // Uncomment when working on fetch, backend, or committing
   }
 
@@ -290,6 +281,7 @@ export default class CheckoutForm extends React.Component {
         default:
           // eslint-disable-next-line no-console
           console.log('Something went wrong in the switch');
+          // Remove or modify before master
       }
     } else if (prevInput.classList.contains('email') && !inputValue.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
       this.setState({
@@ -352,7 +344,7 @@ export default class CheckoutForm extends React.Component {
     } else if (phoneNumber) {
       const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
       const { length } = valueRaw;
-      if (length >= 10 & length < 12) {
+      if (length >= 10 && length < 12) {
         return true;
       }
       if (length < 10) {
