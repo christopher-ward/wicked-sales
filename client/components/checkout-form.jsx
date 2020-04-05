@@ -30,7 +30,8 @@ export default class CheckoutForm extends React.Component {
       shippingAddressCheck: '',
       shippingshippingAddressVisualFeedback: '',
       inputInvalid: '',
-      prevInput: ''
+      prevInput: '',
+      submitDisabled: true
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -211,7 +212,8 @@ export default class CheckoutForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (!this.submitCheck()) {
+    if (this.state.submitDisabled) {
+      this.submitCheck(1);
       return;
     }
     let creditCardRaw = this.state.creditCard;
@@ -296,69 +298,70 @@ export default class CheckoutForm extends React.Component {
     }
   }
 
-  submitCheck() {
+  submitCheck(disabled) {
     const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumber, emailAddress, shippingAddress } = this.state;
-    if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
-      if (name.length < 5) {
-        this.setState({
-          nameCheck: 'Full name required!',
-          nameVisualFeedback: 'fa-times'
-        });
-      } else if (creditCard.length < 19) {
-        this.setState({
-          creditCardCheck: 'Credit Card number required!',
-          creditCardVisualFeedback: 'fa-times'
-        });
-      } else if (cardExpMon.length < 1) {
-        this.setState({
-          cardExpMonCheck: 'Exp Mon required!',
-          cardExpMonVisualFeedback: 'fa-times'
-        });
-      } else if (cardExpYear.length < 4) {
-        this.setState({
-          cardExpYearCheck: 'Exp Year required!',
-          cardExpYearVisualFeedback: 'fa-times'
-        });
-      } else if (cardCVV.length < 3) {
-        this.setState({
-          cardCVVCheck: 'CVV required!',
-          cardCVVVisualFeedback: 'fa-times'
-        });
-      } else if (shippingAddress.length < 21) {
-        this.setState({
-          shippingAddressCheck: 'Shipping Address required!',
-          shippingAddressVisualFeedback: 'fa-times'
-        });
-      } else if (emailAddress.length < 6) {
-        this.setState({
-          emailAddressCheck: 'Email Address required!',
-          emailAddressVisualFeedback: 'fa-times'
-        });
-      } else if (!emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
-        this.setState({
-          emailAddressCheck: 'email@domain.com style required!',
-          emailAddressVisualFeedback: 'fa-times'
-        });
+    if (disabled) {
+      if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
+        if (name.length < 5) {
+          this.setState({
+            nameCheck: 'Full name required!',
+            nameVisualFeedback: 'fa-times'
+          });
+        } if (creditCard.length < 19) {
+          this.setState({
+            creditCardCheck: 'Credit Card number required!',
+            creditCardVisualFeedback: 'fa-times'
+          });
+        } if (cardExpMon.length < 1) {
+          this.setState({
+            cardExpMonCheck: 'Exp Mon required!',
+            cardExpMonVisualFeedback: 'fa-times'
+          });
+        } if (cardExpYear.length < 4) {
+          this.setState({
+            cardExpYearCheck: 'Exp Year required!',
+            cardExpYearVisualFeedback: 'fa-times'
+          });
+        } if (cardCVV.length < 3) {
+          this.setState({
+            cardCVVCheck: 'CVV required!',
+            cardCVVVisualFeedback: 'fa-times'
+          });
+        } if (shippingAddress.length < 21) {
+          this.setState({
+            shippingAddressCheck: 'Shipping Address required!',
+            shippingAddressVisualFeedback: 'fa-times'
+          });
+        } if (emailAddress.length < 6) {
+          this.setState({
+            emailAddressCheck: 'Email Address required!',
+            emailAddressVisualFeedback: 'fa-times'
+          });
+        } if (!emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
+          this.setState({
+            emailAddressCheck: 'email@domain.com style format required!',
+            emailAddressVisualFeedback: 'fa-times'
+          });
+        }
+      } if (phoneNumber) {
+        const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
+        const { length } = valueRaw;
+        // if (length >= 10 && length < 12) {
+        //   return true;
+        // }
+        if (length < 10) {
+          this.setState({
+            phoneNumberCheck: 'Remove or complete',
+            phoneNumberVisualFeedback: 'fa-times'
+          });
+        } else if (length < 1) {
+          this.setState({
+            phoneNumberCheck: '',
+            phoneNumberVisualFeedback: 'fa-check'
+          });
+        }
+        // return false;
       }
-      return false;
-    } else if (phoneNumber) {
-      const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
-      const { length } = valueRaw;
-      if (length >= 10 && length < 12) {
-        return true;
-      }
-      if (length < 10) {
-        this.setState({
-          phoneNumberCheck: 'Remove or complete',
-          phoneNumberVisualFeedback: 'fa-times'
-        });
-      } else if (length < 1) {
-        this.setState({
-          phoneNumberCheck: '',
-          phoneNumberVisualFeedback: 'fa-check'
-        });
-      }
-      return false;
     }
     return true;
   }
@@ -372,6 +375,7 @@ export default class CheckoutForm extends React.Component {
     const cardCVVResultVisual = this.state.cardCVVVisualFeedback;
     const emailAddressResultVisual = this.state.emailAddressVisualFeedback;
     const phoneNumberResultVisual = this.state.phoneNumberVisualFeedback;
+    // const isSubmitDisabled = this.state.submitDisabled;
     const cartItemsArray = this.props.cartItems;
     let totalPrice = null;
     cartItemsArray.forEach(cartItem => {
@@ -534,7 +538,7 @@ export default class CheckoutForm extends React.Component {
               </div>
             </div>
             <div className="checkout-button-price">
-              <button className="btn btn-success" type="submit">Place Order</button>
+              <button className="btn btn-success" type="submit" >Place Order</button>
               <h5 className="col-6 col-lg-8 checkout-price">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h5>
             </div>
           </form>
