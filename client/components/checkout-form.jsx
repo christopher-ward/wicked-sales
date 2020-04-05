@@ -287,7 +287,7 @@ export default class CheckoutForm extends React.Component {
       }
     } else if (prevInput.classList.contains('email') && !inputValue.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
       this.setState({
-        emailAddressCheck: 'email@domain.com style format required!',
+        emailAddressCheck: 'email@domain.com style required!',
         emailAddressVisualFeedback: 'fa-times'
       });
     } else {
