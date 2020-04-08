@@ -382,7 +382,7 @@ export default class CheckoutForm extends React.Component {
 
   submitButton() {
     return this.state.submitDisabled
-      ? <button className="btn btn-secondary disabled" type="submit" >Fillout Form</button>
+      ? <button className="btn btn-secondary disabled" type="submit" >Complete Form</button>
       : <button className="btn btn-success" type="submit" >Place Order</button>;
   }
 
