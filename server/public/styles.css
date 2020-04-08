@@ -121,6 +121,9 @@
 .disclaimer-message small.go {
   color: rgb(18, 221, 18);
 }
+button.btn.disabled {
+  cursor: unset;
+}
 div.checkout-button-price {
   display: flex;
   justify-content: space-between;

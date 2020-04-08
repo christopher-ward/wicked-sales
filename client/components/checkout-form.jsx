@@ -45,8 +45,8 @@ export default class CheckoutForm extends React.Component {
     const name = target.name;
     const classList = target.classList;
     if (classList.contains('number')) {
+      let valueRaw = value;
       if (classList.contains('credit')) {
-        let valueRaw = value;
         valueRaw = valueRaw.split('-').join('');
         if (valueRaw.length > 0) {
           if (valueRaw[valueRaw.length - 1].match(/\d/g)) {
@@ -56,7 +56,6 @@ export default class CheckoutForm extends React.Component {
           }
         }
       } else if (classList.contains('phone')) {
-        let valueRaw = value;
         valueRaw = valueRaw.split(/[-+ ()]/g).join('');
         if (valueRaw.length > 0) {
           if (valueRaw[valueRaw.length - 1].match(/\D/g) || valueRaw.length > 11) {
@@ -76,10 +75,10 @@ export default class CheckoutForm extends React.Component {
         if (classList.contains('month')) {
           if (value.length === 2) {
             if (value[0] > 1) {
-              value = 12;
+              value = '12';
             } else if (value[0] === '1') {
               if (value[1] > 2) {
-                value = 12;
+                value = '12';
               }
             }
           }
@@ -92,7 +91,7 @@ export default class CheckoutForm extends React.Component {
       [name]: value,
       [currentCheck]: '',
       [currentVisualFeedback]: ''
-    });
+    }, this.formCheck);
   }
 
   handleFocus(event) {
@@ -213,7 +212,7 @@ export default class CheckoutForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.submitDisabled) {
-      this.submitCheck(1);
+      this.submitCheck();
       return;
     }
     let creditCardRaw = this.state.creditCard;
@@ -298,72 +297,93 @@ export default class CheckoutForm extends React.Component {
     }
   }
 
-  submitCheck(disabled) {
+  formCheck() {
+    const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumberRaw, emailAddress, shippingAddress } = this.state;
+    if (name.length >= 4 && creditCard.length >= 15 && cardExpMon.length >= 1 && cardExpYear.length >= 4 && cardCVV.length >= 3 && emailAddress.length >= 6 && shippingAddress.length >= 21) {
+      if (emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
+        if (phoneNumberRaw && phoneNumberRaw.length < 10) {
+          this.setState({
+            submitDisabled: true
+          });
+          return;
+        }
+        this.setState({
+          submitDisabled: false
+        });
+        return;
+      }
+    }
+    this.setState({
+      submitDisabled: true
+    });
+  }
+
+  submitCheck() {
     const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumber, emailAddress, shippingAddress } = this.state;
-    if (disabled) {
-      if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
-        if (name.length < 5) {
-          this.setState({
-            nameCheck: 'Full name required!',
-            nameVisualFeedback: 'fa-times'
-          });
-        } if (creditCard.length < 19) {
-          this.setState({
-            creditCardCheck: 'Credit Card number required!',
-            creditCardVisualFeedback: 'fa-times'
-          });
-        } if (cardExpMon.length < 1) {
-          this.setState({
-            cardExpMonCheck: 'Exp Mon required!',
-            cardExpMonVisualFeedback: 'fa-times'
-          });
-        } if (cardExpYear.length < 4) {
-          this.setState({
-            cardExpYearCheck: 'Exp Year required!',
-            cardExpYearVisualFeedback: 'fa-times'
-          });
-        } if (cardCVV.length < 3) {
-          this.setState({
-            cardCVVCheck: 'CVV required!',
-            cardCVVVisualFeedback: 'fa-times'
-          });
-        } if (shippingAddress.length < 21) {
-          this.setState({
-            shippingAddressCheck: 'Shipping Address required!',
-            shippingAddressVisualFeedback: 'fa-times'
-          });
-        } if (emailAddress.length < 6) {
-          this.setState({
-            emailAddressCheck: 'Email Address required!',
-            emailAddressVisualFeedback: 'fa-times'
-          });
-        } if (!emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
-          this.setState({
-            emailAddressCheck: 'email@domain.com style format required!',
-            emailAddressVisualFeedback: 'fa-times'
-          });
-        }
-      } if (phoneNumber) {
-        const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
-        const { length } = valueRaw;
-        // if (length >= 10 && length < 12) {
-        //   return true;
-        // }
-        if (length < 10) {
-          this.setState({
-            phoneNumberCheck: 'Remove or complete',
-            phoneNumberVisualFeedback: 'fa-times'
-          });
-        } else if (length < 1) {
-          this.setState({
-            phoneNumberCheck: '',
-            phoneNumberVisualFeedback: 'fa-check'
-          });
-        }
-        // return false;
+    if (name.length < 5 || creditCard.length < 16 || cardExpMon.length < 1 || cardExpYear.length < 4 || cardCVV.length < 3 || emailAddress.length < 6 || shippingAddress.length < 21) {
+      if (name.length < 5) {
+        this.setState({
+          nameCheck: 'Full name required!',
+          nameVisualFeedback: 'fa-times'
+        });
+      } if (creditCard.length < 19) {
+        this.setState({
+          creditCardCheck: 'Credit Card number required!',
+          creditCardVisualFeedback: 'fa-times'
+        });
+      } if (cardExpMon.length < 1) {
+        this.setState({
+          cardExpMonCheck: 'Exp Mon required!',
+          cardExpMonVisualFeedback: 'fa-times'
+        });
+      } if (cardExpYear.length < 4) {
+        this.setState({
+          cardExpYearCheck: 'Exp Year required!',
+          cardExpYearVisualFeedback: 'fa-times'
+        });
+      } if (cardCVV.length < 3) {
+        this.setState({
+          cardCVVCheck: 'CVV required!',
+          cardCVVVisualFeedback: 'fa-times'
+        });
+      } if (shippingAddress.length < 21) {
+        this.setState({
+          shippingAddressCheck: 'Shipping Address required!',
+          shippingAddressVisualFeedback: 'fa-times'
+        });
+      } if (emailAddress.length < 6) {
+        this.setState({
+          emailAddressCheck: 'Email Address required!',
+          emailAddressVisualFeedback: 'fa-times'
+        });
+      } if (!emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
+        this.setState({
+          emailAddressCheck: 'email@domain.com style format required!',
+          emailAddressVisualFeedback: 'fa-times'
+        });
+      }
+    } if (phoneNumber) {
+      const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
+      const { length } = valueRaw;
+      if (length < 10) {
+        this.setState({
+          phoneNumberCheck: 'Remove or complete',
+          phoneNumberVisualFeedback: 'fa-times'
+        });
+      } else if (length < 1) {
+        this.setState({
+          phoneNumberCheck: '',
+          phoneNumberVisualFeedback: 'fa-check'
+        });
       }
     }
     return true;
+  }
+
+  submitButton() {
+    return this.state.submitDisabled
+      ? <button className="btn btn-secondary disabled" type="submit" >Fillout Form</button>
+      : <button className="btn btn-success" type="submit" >Place Order</button>;
   }
 
   render() {
@@ -375,7 +395,7 @@ export default class CheckoutForm extends React.Component {
     const cardCVVResultVisual = this.state.cardCVVVisualFeedback;
     const emailAddressResultVisual = this.state.emailAddressVisualFeedback;
     const phoneNumberResultVisual = this.state.phoneNumberVisualFeedback;
-    // const isSubmitDisabled = this.state.submitDisabled;
+    const submitButton = this.submitButton();
     const cartItemsArray = this.props.cartItems;
     let totalPrice = null;
     cartItemsArray.forEach(cartItem => {
@@ -538,7 +558,7 @@ export default class CheckoutForm extends React.Component {
               </div>
             </div>
             <div className="checkout-button-price">
-              <button className="btn btn-success" type="submit" >Place Order</button>
+              {submitButton}
               <h5 className="col-6 col-lg-8 checkout-price">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h5>
             </div>
           </form>
