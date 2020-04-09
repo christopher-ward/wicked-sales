@@ -147,10 +147,8 @@ app.post('/api/cart', (req, res, next) => {
 });
 
 app.post('/api/orders', (req, res, next) => {
-  const { name } = req.body;
   const { cartId } = req.session;
-  const { creditCard } = req.body;
-  const { shippingAddress } = req.body;
+  const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumber, emailAddress, shippingAddress } = req.body;
   if (!cartId) {
     return next(new ClientError('No cart ID for this session. Must initially add items to cart.', 400));
   } else if (!name || !creditCard || !shippingAddress) {
@@ -158,10 +156,10 @@ app.post('/api/orders', (req, res, next) => {
   }
   const sql = `
   insert into "orders"
-              ("cartId", "name", "creditCard", "shippingAddress")
-       values ($1, $2, $3, $4)
+              ("cartId", "name", "creditCard", "cardExpMon", "cardExpYear", "cardCVV", "phoneNumber", "emailAddress", "shippingAddress")
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
   returning *`;
-  const paramArray = [cartId, name, creditCard, shippingAddress];
+  const paramArray = [cartId, name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumber, emailAddress, shippingAddress];
   db.query(sql, paramArray)
     .then(result => {
       const resultObj = result.rows[0];
