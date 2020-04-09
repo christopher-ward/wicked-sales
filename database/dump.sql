@@ -136,7 +136,12 @@ CREATE TABLE public.orders (
     "orderId" integer NOT NULL,
     "cartId" integer NOT NULL,
     name text NOT NULL,
-    "creditCard" text NOT NULL,
+    "creditCard" bigint NOT NULL,
+    "cardExpMon" integer NOT NULL,
+    "cardExpYear" integer NOT NULL,
+    "cardCVV" integer NOT NULL,
+    "phoneNumber" bigint,
+    "emailAddress" TEXT NOT NULL,
     "shippingAddress" text NOT NULL,
     "createdAt" timestamp(6) with time zone DEFAULT now() NOT NULL
 );
@@ -419,7 +424,7 @@ COPY public.carts ("cartId", "createdAt") FROM stdin;
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", "createdAt") FROM stdin;
+COPY public.orders ("orderId", "cartId", name, "creditCard", "cardExpMon", "cardExpYear", "cardCVV", "phoneNumber", "emailAddress", "shippingAddress", "createdAt") FROM stdin;
 \.
 
 
@@ -507,4 +512,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
