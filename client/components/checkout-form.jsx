@@ -220,6 +220,9 @@ export default class CheckoutForm extends React.Component {
     const orderObj = {
       name: this.state.name,
       creditCard: parseInt(creditCardRaw),
+      cardExpMon: parseInt(this.state.cardExpMon),
+      cardExpYear: parseInt(this.state.cardExpYear),
+      cardCVV: parseInt(this.state.cardCVV),
       phoneNumber: parseInt(this.state.phoneNumberRaw) || null,
       emailAddress: this.state.emailAddress,
       shippingAddress: this.state.shippingAddress
