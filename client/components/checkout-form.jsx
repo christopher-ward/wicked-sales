@@ -227,8 +227,7 @@ export default class CheckoutForm extends React.Component {
       emailAddress: this.state.emailAddress,
       shippingAddress: this.state.shippingAddress
     };
-    // console.log(orderObj); // For Developing to see what orderObj will look like. Remove before master
-    this.props.placeOrder(orderObj); // Uncomment when working on fetch, backend, or committing
+    this.props.placeOrder(orderObj);
   }
 
   inputCheck(prevInput) {
@@ -282,10 +281,6 @@ export default class CheckoutForm extends React.Component {
             emailAddressVisualFeedback: 'fa-times'
           });
           break;
-        default:
-          // eslint-disable-next-line no-console
-          console.log('Something went wrong in the switch');
-          // Remove or modify before master
       }
     } else if (prevInput.classList.contains('email') && !inputValue.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
       this.setState({
