@@ -130,8 +130,7 @@ export default class CheckoutForm extends React.Component {
             });
           } else {
             this.setState({
-              cardExpMonCheck: '',
-              cardExpMonVisualFeedback: 'fa-check'
+              cardExpMonCheck: ''
             });
           }
         }
@@ -160,14 +159,12 @@ export default class CheckoutForm extends React.Component {
                 });
               } else {
                 this.setState({
-                  cardExpMonCheck: '',
-                  cardExpMonVisualFeedback: 'fa-check'
+                  cardExpMonCheck: ''
                 });
               }
             } else {
               this.setState({
-                cardExpMonCheck: '',
-                cardExpMonVisualFeedback: 'fa-check'
+                cardExpMonCheck: ''
               });
             }
           }
@@ -192,14 +189,12 @@ export default class CheckoutForm extends React.Component {
                 });
               } else {
                 this.setState({
-                  cardExpMonCheck: '',
-                  cardExpMonVisualFeedback: 'fa-check'
+                  cardExpMonCheck: ''
                 });
               }
             } else {
               this.setState({
-                cardExpMonCheck: '',
-                cardExpMonVisualFeedback: 'fa-check'
+                cardExpMonCheck: ''
               });
             }
           }
@@ -236,7 +231,6 @@ export default class CheckoutForm extends React.Component {
     const inputValueLength = prevInput.value.length;
     const inputMin = prevInput.minLength;
     const currentCheck = `${inputName}Check`;
-    const currentVisual = `${inputName}VisualFeedback`;
     if (inputValueLength < inputMin) {
       switch (inputName) {
         case 'name':
@@ -289,15 +283,14 @@ export default class CheckoutForm extends React.Component {
       });
     } else {
       this.setState({
-        [currentCheck]: '',
-        [currentVisual]: 'fa-check'
+        [currentCheck]: ''
       });
     }
   }
 
   formCheck() {
     const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumberRaw, emailAddress, shippingAddress } = this.state;
-    if (name.length >= 4 && creditCard.length >= 15 && cardExpMon.length >= 1 && cardExpYear.length >= 4 && cardCVV.length >= 3 && emailAddress.length >= 6 && shippingAddress.length >= 21) {
+    if (name.length >= 4 && creditCard.length >= 19 && cardExpMon.length >= 1 && (cardExpYear.length === 2 || cardExpYear.length === 4) && cardCVV.length >= 3 && emailAddress.length >= 6 && shippingAddress.length >= 21) {
       if (emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
         if (phoneNumberRaw && phoneNumberRaw.length < 10) {
           this.setState({
@@ -370,8 +363,7 @@ export default class CheckoutForm extends React.Component {
         });
       } else if (length < 1) {
         this.setState({
-          phoneNumberCheck: '',
-          phoneNumberVisualFeedback: 'fa-check'
+          phoneNumberCheck: ''
         });
       }
     }
@@ -472,9 +464,7 @@ export default class CheckoutForm extends React.Component {
                   value={this.state.cardExpYear}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                  minLength={4}
-                  maxLength={4} />
+                  onBlur={this.handleBlur} />
                 <div className="d-flex input-feedback">
                   <i className={`fas ${cardExpYearResultVisual}`} />
                   <small>{this.state.cardExpYearCheck}</small>
