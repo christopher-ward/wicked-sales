@@ -40,6 +40,9 @@ export default class CheckoutForm extends React.Component {
   }
 
   handleFormChange(event) {
+    // const date = new Date();
+    // const currentMonth = date.getMonth() + 1;
+    // const currentYear = date.getFullYear();
     const target = event.target;
     let value = target.value;
     const name = target.name;
@@ -82,6 +85,20 @@ export default class CheckoutForm extends React.Component {
               }
             }
           }
+          // else {
+          //   if (this.state.cardExpYear === `${currentYear}` && this.state.submitDisabled) {
+          //     if (value <= currentMonth) {
+          //       this.setState({
+          //         cardExpMonCheck: 'Month is expired',
+          //         cardExpMonVisualFeedback: 'fa-times'
+          //       });
+          //     } else {
+          //       this.setState({
+          //         cardExpMonCheck: ''
+          //       });
+          //     }
+          //   }
+          // }
         }
       }
     }
@@ -138,7 +155,13 @@ export default class CheckoutForm extends React.Component {
       }
       this.inputCheck(tempInput);
     } else if (classList.contains('year')) {
-      if (value.length === 2) {
+      if (value.length === 1 || value.length === 3) {
+        this.setState({
+          cardExpYearCheck: 'Exp Year required!',
+          cardExpYearVisualFeedback: 'fa-times'
+        });
+        return;
+      } else if (value.length === 2) {
         value = `20${value}`;
         if (value < currentYear) {
           this.setState({
@@ -146,7 +169,7 @@ export default class CheckoutForm extends React.Component {
             cardExpYearVisualFeedback: 'fa-times'
           });
           return;
-        } else if (value >= currentYear) {
+        } else {
           this.setState({
             cardExpYear: value
           });
@@ -206,7 +229,7 @@ export default class CheckoutForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.submitDisabled) {
+    if (this.formCheck()) {
       this.submitCheck();
       return;
     }
@@ -223,6 +246,7 @@ export default class CheckoutForm extends React.Component {
       shippingAddress: this.state.shippingAddress
     };
     this.props.placeOrder(orderObj);
+    // console.log(orderObj);
   }
 
   inputCheck(prevInput) {
@@ -285,28 +309,29 @@ export default class CheckoutForm extends React.Component {
       this.setState({
         [currentCheck]: ''
       });
+      return true;
     }
   }
 
   formCheck() {
     const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumberRaw, emailAddress, shippingAddress } = this.state;
-    if (name.length >= 4 && creditCard.length >= 19 && cardExpMon.length >= 1 && (cardExpYear.length === 2 || cardExpYear.length === 4) && cardCVV.length >= 3 && emailAddress.length >= 6 && shippingAddress.length >= 21) {
-      if (emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)) {
-        if (phoneNumberRaw && phoneNumberRaw.length < 10) {
-          this.setState({
-            submitDisabled: true
-          });
-          return;
-        }
+    const emailCheck = emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g);
+    if (name.length >= 4 && creditCard.length >= 19 && cardExpMon.length >= 1 && (cardExpYear.length === 2 || cardExpYear.length === 4) && cardCVV.length >= 3 && emailCheck && shippingAddress.length >= 21) {
+      if (phoneNumberRaw && phoneNumberRaw.length >= 10) {
         this.setState({
           submitDisabled: false
         });
-        return;
+        return false;
       }
+      this.setState({
+        submitDisabled: false
+      });
+      return false;
     }
     this.setState({
       submitDisabled: true
     });
+    return true;
   }
 
   submitCheck() {
@@ -327,7 +352,7 @@ export default class CheckoutForm extends React.Component {
           cardExpMonCheck: 'Exp Mon required!',
           cardExpMonVisualFeedback: 'fa-times'
         });
-      } if (cardExpYear.length < 4) {
+      } if (cardExpYear.length === 1 || cardExpYear.length === 3) {
         this.setState({
           cardExpYearCheck: 'Exp Year required!',
           cardExpYearVisualFeedback: 'fa-times'
