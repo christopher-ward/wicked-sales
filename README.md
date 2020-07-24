@@ -1,5 +1,4 @@
 # Wicked Sales
-> - Maintained by: `christopher-ward`  (Updated 2/12/20)
 
 A full stack online retail shopping cart app using React.js, Node.js, and PostgreSQL
 ## Technologies Used
