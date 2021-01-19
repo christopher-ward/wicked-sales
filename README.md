@@ -2,7 +2,7 @@
 
 A full stack online retail shopping cart app using React.js, Node.js, and PostgreSQL
 ## Technologies Used
-- React
+- React.js
 - Webpack 4
 - Bootstrap 4
 - Node.js
