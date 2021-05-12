@@ -29,7 +29,6 @@ export default class CheckoutForm extends React.Component {
       shippingAddress: '',
       shippingAddressCheck: '',
       shippingshippingAddressVisualFeedback: '',
-      inputInvalid: '',
       prevInput: '',
       submitDisabled: true
     };
@@ -246,7 +245,6 @@ export default class CheckoutForm extends React.Component {
       shippingAddress: this.state.shippingAddress
     };
     this.props.placeOrder(orderObj);
-    // console.log(orderObj);
   }
 
   inputCheck(prevInput) {
@@ -352,7 +350,7 @@ export default class CheckoutForm extends React.Component {
           cardExpMonCheck: 'Exp Mon required!',
           cardExpMonVisualFeedback: 'fa-times'
         });
-      } if (cardExpYear.length === 1 || cardExpYear.length === 3) {
+      } if (cardExpYear.length === 0 || cardExpYear.length === 1 || cardExpYear.length === 3) {
         this.setState({
           cardExpYearCheck: 'Exp Year required!',
           cardExpYearVisualFeedback: 'fa-times'
@@ -489,7 +487,8 @@ export default class CheckoutForm extends React.Component {
                   value={this.state.cardExpYear}
                   onChange={this.handleFormChange}
                   onFocus={this.handleFocus}
-                  onBlur={this.handleBlur} />
+                  onBlur={this.handleBlur}
+                  minLength={2}/>
                 <div className="d-flex input-feedback">
                   <i className={`fas ${cardExpYearResultVisual}`} />
                   <small>{this.state.cardExpYearCheck}</small>
