@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'catalog',
+        name: 'catalog', // change from 'catalog' to debug
         params: {}
       },
       modalView: true,
@@ -42,7 +42,7 @@ export default class App extends React.Component {
   }
 
   addToCart(product) {
-    const fetchURL = '/api/cart';
+    const fetchURL = '/api/cart/';
     const initObj = {
       method: 'POST',
       headers: {
