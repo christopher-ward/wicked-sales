@@ -314,12 +314,19 @@ export default class CheckoutForm extends React.Component {
   formCheck() {
     const date = new Date();
     const currentYear = date.getFullYear();
+    const currentMonth = date.getMonth() + 1;
     const { name, creditCard, cardExpMon, cardExpYear, cardCVV, phoneNumberRaw, emailAddress, shippingAddress } = this.state;
     const emailCheck = emailAddress.match(/(?=[a-z0-9@.!#$%&'*+/=?^_‘{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:(?=[a-z0-9-]{1,227}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{2,24})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g);
     if (name.length >= 4 && creditCard.length >= 19 && cardExpMon.length >= 1 && (cardExpYear.length === 2 || cardExpYear.length === 4) && cardCVV.length >= 3 && emailCheck && shippingAddress.length >= 21) {
       let tempYearVal = cardExpYear;
       if (tempYearVal.length === 2) {
         tempYearVal = `20${tempYearVal}`;
+      }
+      if (tempYearVal < currentYear || (parseInt(tempYearVal) === currentYear && cardExpMon <= currentMonth)) {
+        this.setState({
+          submitDisabled: true
+        });
+        return true;
       }
       if (tempYearVal < currentYear) {
         this.setState({
