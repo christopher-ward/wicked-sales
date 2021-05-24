@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: {
-        name: 'catalog', // change from 'catalog' to debug
+        name: 'catalog',
         params: {}
       },
       modalView: true,
