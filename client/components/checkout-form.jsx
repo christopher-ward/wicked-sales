@@ -303,6 +303,13 @@ export default class CheckoutForm extends React.Component {
         emailAddressCheck: 'email@domain.com style required!',
         emailAddressVisualFeedback: 'fa-times'
       });
+    } else if (inputName === 'phoneNumber' && inputValue) {
+      if (inputValueLength < 10) {
+        this.setState({
+          phoneNumberCheck: 'Complete or Remove',
+          phoneNumberVisualFeedback: 'fa-times'
+        });
+      }
     } else {
       this.setState({
         [currentCheck]: ''
@@ -334,11 +341,11 @@ export default class CheckoutForm extends React.Component {
         });
         return true;
       }
-      if (phoneNumberRaw && phoneNumberRaw.length >= 10) {
+      if (phoneNumberRaw && phoneNumberRaw.length < 10) {
         this.setState({
-          submitDisabled: false
+          submitDisabled: true
         });
-        return false;
+        return true;
       }
       this.setState({
         submitDisabled: false
@@ -395,17 +402,14 @@ export default class CheckoutForm extends React.Component {
           emailAddressVisualFeedback: 'fa-times'
         });
       }
-    } if (phoneNumber) {
+    }
+    if (phoneNumber) {
       const valueRaw = phoneNumber.split(/[-+ ()]/g).join('');
       const { length } = valueRaw;
       if (length < 10) {
         this.setState({
-          phoneNumberCheck: 'Remove or complete',
+          phoneNumberCheck: 'Complete or Remove',
           phoneNumberVisualFeedback: 'fa-times'
-        });
-      } else if (length < 1) {
-        this.setState({
-          phoneNumberCheck: ''
         });
       }
     }
