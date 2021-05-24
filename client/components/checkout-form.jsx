@@ -39,9 +39,6 @@ export default class CheckoutForm extends React.Component {
   }
 
   handleFormChange(event) {
-    // const date = new Date();
-    // const currentMonth = date.getMonth() + 1;
-    // const currentYear = date.getFullYear();
     const target = event.target;
     let value = target.value;
     const name = target.name;
@@ -84,20 +81,6 @@ export default class CheckoutForm extends React.Component {
               }
             }
           }
-          // else {
-          //   if (this.state.cardExpYear === `${currentYear}` && this.state.submitDisabled) {
-          //     if (value <= currentMonth) {
-          //       this.setState({
-          //         cardExpMonCheck: 'Month is expired',
-          //         cardExpMonVisualFeedback: 'fa-times'
-          //       });
-          //     } else {
-          //       this.setState({
-          //         cardExpMonCheck: ''
-          //       });
-          //     }
-          //   }
-          // }
         }
       }
     }
