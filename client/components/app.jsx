@@ -42,7 +42,7 @@ export default class App extends React.Component {
   }
 
   addToCart(product) {
-    const fetchURL = '/api/cart';
+    const fetchURL = '/api/cart/';
     const initObj = {
       method: 'POST',
       headers: {
@@ -148,7 +148,8 @@ export default class App extends React.Component {
             cartItemCount={cartLength}
             view={this.setView} />
           <CheckoutForm
-            placeOrder={this.placeOrder}/>
+            placeOrder={this.placeOrder}
+            cartItems={this.state.cart}/>
         </>
       );
     }
