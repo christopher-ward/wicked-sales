@@ -8,7 +8,12 @@ export default function ProductListItem(props) {
   };
   return (
     <div className="col-md-6 col-lg-4 col-xl-4"
-      onClick={() => props.view(newViewObjName, newViewObjParams)}>
+      onClick={() => props.view(newViewObjName, newViewObjParams)}
+      onKeyPress={event => {
+        if (event.key === 'Enter') {
+          props.view(newViewObjName, newViewObjParams);
+        }
+      }}>
       <div className="card justify-content-between my-3">
         <img src={props.image} className="card-img-top mt-3" alt={altText} />
         <div className="card-body" tabIndex="0">
