@@ -6,14 +6,16 @@ export default function ProductListItem(props) {
   const newViewObjParams = {
     productId: props.id
   };
+  const productView = () => props.view(newViewObjName, newViewObjParams);
+  const enterKeyListener = event => {
+    if (event.key === 'Enter') {
+      props.view(newViewObjName, newViewObjParams);
+    }
+  };
   return (
     <div className="col-md-6 col-lg-4 col-xl-4"
-      onClick={() => props.view(newViewObjName, newViewObjParams)}
-      onKeyPress={event => {
-        if (event.key === 'Enter') {
-          props.view(newViewObjName, newViewObjParams);
-        }
-      }}>
+      onClick={productView}
+      onKeyPress={enterKeyListener}>
       <div className="card justify-content-between my-3">
         <img src={props.image} className="card-img-top mt-3" alt={altText} />
         <div className="card-body" tabIndex="0">
