@@ -11,7 +11,7 @@ export default function ProductListItem(props) {
       onClick={() => props.view(newViewObjName, newViewObjParams)}>
       <div className="card justify-content-between my-3">
         <img src={props.image} className="card-img-top mt-3" alt={altText} />
-        <div className="card-body">
+        <div className="card-body" tabIndex="0">
           <h4 className="card-title">{props.name}</h4>
           <h5>{`$${parseFloat(props.price / 100).toFixed(2)}`}</h5>
           <p>{props.shortDescription}</p>
