@@ -12,8 +12,8 @@ export default function CartSummaryItem(props) {
         <img className="card-img" src={itemImage} alt={altText}/>
       </div>
       <div className="item-info col-sm-4 col-lg-6">
-        <h4 className="card-title">{itemName}</h4>
-        <h5>{`$${parseFloat(itemPrice / 100).toFixed(2)}`}</h5>
+        <h2 className="card-title">{itemName}</h2>
+        <h3>{`$${parseFloat(itemPrice / 100).toFixed(2)}`}</h3>
         <p>{itemShortDesc}</p>
       </div>
     </div>
