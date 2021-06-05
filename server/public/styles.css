@@ -247,3 +247,12 @@ h2.checkout-price {
     left: -20px;
   }
 }
+
+@media only screen and (orientation: landscape) {
+  .checkout {
+    height: 50px;
+  }
+  .checkout h2 {
+    font-size: 1.35rem;
+  }
+}
