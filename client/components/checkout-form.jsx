@@ -577,7 +577,7 @@ export default class CheckoutForm extends React.Component {
             </div>
             <div className="checkout-button-price">
               {submitButton}
-              <h5 className="col-6 col-lg-8 checkout-price">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h5>
+              <h2 className="col-6 col-lg-8 checkout-price">{`Total Price: $${parseFloat(totalPrice / 100).toFixed(2)}`}</h2>
             </div>
           </form>
         </div>

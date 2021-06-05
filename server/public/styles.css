@@ -18,7 +18,7 @@
   object-fit: contain;
   height: 200px;
 }
-.card h4 {
+.card h2, .card h3 {
   font-size: 1.25rem;
 }
 .card p {
@@ -76,6 +76,12 @@
   object-fit: contain;
   height: 280px;
 }
+.details h2 {
+  font-size: 1.5rem;
+}
+.details h3 {
+  font-size: 1.25rem;
+}
 .summary {
   margin-bottom: 55px;
 }
@@ -130,7 +136,7 @@ div.checkout-button-price {
   align-items: center;
   margin-top: 1.5rem;
 }
-h5.checkout-price {
+h2.checkout-price {
   text-align: right;
   line-height: 1.35rem;
   font-size: 1.35rem;
@@ -202,7 +208,7 @@ h5.checkout-price {
   .details {
     margin: 1rem 0!important;
   }
-  .checkout h4 {
+  .checkout h2 {
     font-size: 1.35rem;
   }
   .form-group .input-feedback.cvv {
@@ -233,11 +239,20 @@ h5.checkout-price {
 }
 
 @media only screen and (max-width: 375px) {
-  .checkout h4, h5.checkout-price {
+  .checkout h2, h2.checkout-price {
     font-size: 1.25rem;
   }
   label[for="phoneNumber"] {
     position: relative;
     left: -20px;
+  }
+}
+
+@media only screen and (orientation: landscape) {
+  .checkout {
+    height: 50px;
+  }
+  .checkout h2 {
+    font-size: 1.35rem;
   }
 }
