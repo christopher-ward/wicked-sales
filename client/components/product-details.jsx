@@ -39,8 +39,9 @@ export default class ProductDetails extends React.Component {
       <div className="container my-3 details">
         <div className="row no-gutters mt-3">
           <div className="col-sm-6 col-lg-4">
-            <span className="back ml-3"
-              onClick={resetView}>{'< Back to Catalog'}</span>
+            <p className="back my-0"
+              tabIndex="0"
+              onClick={resetView}>{'< Back to Catalog'}</p>
             <img src={productImage} className="card-img mt-4" alt={altText} />
           </div>
           <div className="col-sm-6 col-lg-8 pl-2">
