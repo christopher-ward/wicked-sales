@@ -34,14 +34,21 @@ export default class ProductDetails extends React.Component {
     const productPrice = this.state.product.price;
     const productShortDescription = this.state.product.shortDescription;
     const productLongDescription = this.state.product.longDescription;
+    const newViewObjName = 'catalog';
     const resetView = () => this.props.view('catalog', {});
+    const enterKeyListener = event => {
+      if (event.key === 'Enter') {
+        this.props.view(newViewObjName, {});
+      }
+    };
     return (
       <div className="container my-3 details">
         <div className="row no-gutters mt-3">
           <div className="col-sm-6 col-lg-4">
             <p className="back my-0"
               tabIndex="0"
-              onClick={resetView}>{'< Back to Catalog'}</p>
+              onClick={resetView}
+              onKeyPress={enterKeyListener}>{'< Back to Catalog'}</p>
             <img src={productImage} className="card-img mt-4" alt={altText} />
           </div>
           <div className="col-sm-6 col-lg-8 pl-2">

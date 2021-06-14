@@ -5,6 +5,7 @@ export default function CartSummary(props) {
   let totalPrice = null;
   const resetView = () => props.view('catalog', {});
   const cartItemsArray = props.cartItems;
+  const newViewObjName = 'catalog';
   cartItemsArray.forEach(cartItem => {
     totalPrice += cartItem.price;
   });
@@ -17,6 +18,11 @@ export default function CartSummary(props) {
       shortDescription={cartItem.shortDescription}
     />
   );
+  const enterKeyListener = event => {
+    if (event.key === 'Enter') {
+      props.view(newViewObjName, {});
+    }
+  };
   if (cartSummaryList.length === 0) {
     return (
       <div className="container my-3 summary">
@@ -24,7 +30,8 @@ export default function CartSummary(props) {
           <div className="col">
             <p className="back my-0"
               tabIndex="0"
-              onClick={resetView}>{'< Back to Catalog'}</p>
+              onClick={resetView}
+              onKeyPress={enterKeyListener}>{'< Back to Catalog'}</p>
             <h1 className="mt-3">My Cart</h1>
             <h2 className="mt-3 text-center">No Items In Cart</h2>
           </div>
@@ -39,7 +46,8 @@ export default function CartSummary(props) {
           <div className="col">
             <p className="back my-0"
               tabIndex="0"
-              onClick={resetView}>{'< Back to Catalog'}</p>
+              onClick={resetView}
+              onKeyPress={enterKeyListener}>{'< Back to Catalog'}</p>
             <h1 className="mt-3 ">My Cart</h1>
           </div>
         </div>
