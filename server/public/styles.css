@@ -25,7 +25,9 @@
   font-size: 0.95rem;
 }
 .back {
+  display: inline;
   font-size: 1.15rem;
+  font-weight: 500;
   margin: 1rem 1rem 1rem 0;
 }
 .disclaimer, .disclaimer .disclaimer-message {
@@ -78,6 +80,7 @@
 }
 .details h2 {
   font-size: 1.5rem;
+  font-weight: 700;
 }
 .details h3 {
   font-size: 1.25rem;
